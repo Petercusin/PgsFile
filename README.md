@@ -4,13 +4,15 @@ Whether you need to scrape data from websites, clean text, or analyze language, 
 
 To explore more features and usages of this powerful Python library, follow us and stay updated! For detailed tutorials, examples, and advanced tips, scan the QR code below to follow our WeChat public account named "树下编程". Join our community to unlock the full potential of this library and elevate your data processing and analysis skills! Thank you!
 
-[qrcode](https://github.com/user-attachments/assets/932ff4f6-1378-42c8-ae5f-1f3713bed7ec)
+![qrcode](https://github.com/user-attachments/assets/9dfdcc18-a699-471a-b660-2aeae88cbdd2)
+
+
 
 Homepage: 
 https://pypi.org/project/PgsFile/
 
 Status: 
-https://pypistats.org/packages/pgsfile
+https://pypistats.org/packages/pgsfile; 
 https://clickpy.clickhouse.com/dashboard/pgsfile
 
 Installation for Python: 
