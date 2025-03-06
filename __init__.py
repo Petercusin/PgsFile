@@ -17,6 +17,7 @@ from .PgsFile import get_data_table_url, get_data_table_html_string
 
 # 4. Text data storage
 from .PgsFile import write_to_txt, write_to_excel, write_to_json, write_to_json_lines, append_dict_to_json, save_dict_to_excel
+from .PgsFile import write_to_excel_normal
 
 # 5. File/folder process
 from .PgsFile import FilePath, FileName, DirList
@@ -25,6 +26,9 @@ from .PgsFile import makedirec, makefile
 from .PgsFile import source_path, next_folder_names, get_directory_tree_with_meta, find_txt_files_with_keyword
 from .PgsFile import remove_empty_folders, remove_empty_txts, remove_empty_lines, remove_empty_last_line, move_file, copy_file
 from .PgsFile import concatenate_excel_files
+from .PgsFile import set_permanent_environment_variable
+from .PgsFile import delete_permanent_environment_variable
+from .PgsFile import get_env_variable
 
 # 6. Data cleaning
 from .PgsFile import BigPunctuation, StopTags, Special, yhd

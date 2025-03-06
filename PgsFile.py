@@ -237,6 +237,40 @@ def write_to_excel(excel_path, data, sheet_name=None, index=None):
         
     df=pd.DataFrame(dic_of_list)
     df.style.to_excel(excel_path, sheet_name=sheet_name,startcol=0, index=index)
+
+def write_to_excel_normal(excel_path,dic_of_list,sheet_name=None,index=None):
+    '''
+    Parameters
+    ----------
+    excel_path : TYPE
+        DESCRIPTION. D:\results.xlsx
+        
+    dic_of_list : TYPE
+        DESCRIPTION. {"col":["a","b","c","d"],"freq":[1,2,3,4]}
+        
+    sheet_name : TYPE, optional
+        DESCRIPTION. The default is None.
+        
+    index : TYPE, optional
+        DESCRIPTION. The default is None.
+        
+    Returns
+    -------
+    None.
+
+    '''
+    import pandas as pd
+    if sheet_name is None:
+        sheet_name="sheet1"
+    else:
+       sheet_name=sheet_name
+    if index is None:
+        index=False
+    else:
+        index=True        
+        
+    df=pd.DataFrame(dic_of_list)
+    df.style.to_excel(excel_path, sheet_name=sheet_name,startcol=0, index=index)
     
 def get_data_tsv(file_path):
     '''
@@ -2226,3 +2260,72 @@ def get_font_path(font_name=None):
 simhei_default_font_path_MacOS_Windows=["/System/Library/Fonts/STHeiti Medium.ttc",
                    r"C:\Windows\Fonts\simhei.ttf",  # Use a font that supports Chinese characters
                    ]
+
+
+def get_env_variable(variable_name):
+    # Get the value of the specified environment variable
+    value = os.getenv(variable_name)
+
+    # Check if the environment variable is set
+    if value is not None:
+        print(f"{variable_name} is set to: {value}")
+    else:
+        print(f"{variable_name} is not set.")
+
+import subprocess
+def set_permanent_environment_variable(variable_name, variable_value, system_wide=False):
+    """
+    Sets a permanent environment variable on Windows using the `setx` command.
+
+    Args:
+        variable_name (str): The name of the environment variable.
+        variable_value (str): The value to set for the environment variable.
+        system_wide (bool): If True, sets the variable system-wide (requires admin privileges).
+                            If False, sets the variable for the current user only.
+    """
+    try:
+        # Construct the setx command
+        command = ['setx', variable_name, variable_value]
+        if system_wide:
+            command.append('/M')  # Add /M flag for system-wide variables
+
+        # Run the command
+        subprocess.run(command, shell=True, check=True)
+
+        print(f'Permanent environment variable {variable_name} set to {variable_value} '
+              f'({"system-wide" if system_wide else "user-level"}).')
+    except subprocess.CalledProcessError as e:
+        print(f'Failed to set environment variable: {e}')
+    except Exception as e:
+        print(f'An error occurred: {e}')
+
+def delete_permanent_environment_variable(variable_name, system_wide=False):
+    """
+    Deletes a permanent environment variable on Windows using the `reg` command.
+
+    Args:
+        variable_name (str): The name of the environment variable to delete.
+        system_wide (bool): If True, deletes the variable system-wide (requires admin privileges).
+                            If False, deletes the variable for the current user only.
+    """
+    try:
+        # Determine the registry key based on the scope
+        if system_wide:
+            reg_key = r'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
+        else:
+            reg_key = r'HKCU\Environment'
+
+        # Run the `reg delete` command to remove the variable
+        subprocess.run(
+            ['reg', 'delete', reg_key, '/v', variable_name, '/f'],
+            shell=True,
+            check=True
+        )
+
+        print(f'Permanent environment variable {variable_name} deleted '
+              f'({"system-wide" if system_wide else "user-level"}).')
+    except subprocess.CalledProcessError as e:
+        print(f'Failed to delete environment variable: {e}')
+    except Exception as e:
+        print(f'An error occurred: {e}')
+
