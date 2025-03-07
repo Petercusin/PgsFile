@@ -16,7 +16,7 @@ https://pypistats.org/packages/pgsfile;
 https://clickpy.clickhouse.com/dashboard/pgsfile
 
 Installation for Python: 
-pip install pgsfile==0.2.5
+pip install pgsfile==0.2.6
 
 Key Features:
 1. Web Scraping: Easily scrape data from websites and download multimedia content.
