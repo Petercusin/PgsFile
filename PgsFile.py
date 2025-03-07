@@ -2265,12 +2265,14 @@ simhei_default_font_path_MacOS_Windows=["/System/Library/Fonts/STHeiti Medium.tt
 def get_env_variable(variable_name):
     # Get the value of the specified environment variable
     value = os.getenv(variable_name)
+    return value
 
-    # Check if the environment variable is set
-    if value is not None:
-        print(f"{variable_name} is set to: {value}")
-    else:
-        print(f"{variable_name} is not set.")
+def get_all_env_variables():
+    # Get all environment variables
+    env_vars = os.environ
+    
+    # Print all user environment variables
+    return dict(env_vars)
 
 import subprocess
 def set_permanent_environment_variable(variable_name, variable_value, system_wide=False):

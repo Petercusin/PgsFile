@@ -28,7 +28,7 @@ from .PgsFile import remove_empty_folders, remove_empty_txts, remove_empty_lines
 from .PgsFile import concatenate_excel_files
 from .PgsFile import set_permanent_environment_variable
 from .PgsFile import delete_permanent_environment_variable
-from .PgsFile import get_env_variable
+from .PgsFile import get_env_variable, get_all_env_variables
 
 # 6. Data cleaning
 from .PgsFile import BigPunctuation, StopTags, Special, yhd
