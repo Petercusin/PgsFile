@@ -545,9 +545,1051 @@ nltk_en_tags={'CC': '并列连词', 'CD': '基数词', 'DT': '限定符', 'EX': 
 nltk_tag_mapping={'NN': 'Noun', 'NNS': 'Noun', 'NNP': 'Noun', 'NNPS': 'Noun', 'VB': 'Verb', 'VBD': 'Verb', 'VBG': 'Verb', 'VBN': 'Verb', 'VBP': 'Verb', 'VBZ': 'Verb', 'JJ': 'Adjective', 'JJR': 'Adjective', 'JJS': 'Adjective', 'RB': 'Adverb', 'RBR': 'Adverb', 'RBS': 'Adverb', 'IN': 'Preposition', 'PRP': 'Pronoun', 'PRP$': 'Pronoun', 'DT': 'Determiner', 'CC': 'Conjunction', 'CD': 'Numeral', 'UH': 'Interjection', 'FW': 'Foreign Word', 'TO': 'Particle', 'EX': 'Existential "there"', 'MD': 'Modal Auxiliary', 'WDT': 'Wh-determiner', 'WP': 'Wh-pronoun', 'WP$': 'Possessive wh-pronoun', 'WRB': 'Wh-adverb', 'SYM': 'Symbol', 'RP': 'Particle', 'POS': 'Possessive ending', 'PDT': 'Predeterminer', 'LS': 'List item marker', 'NIL': 'Missing tag'}
 
 ICTCLAS2008={'a': '形容词', 'ad': '副形词', 'ag': '形容词性语素', 'al': '形容词性惯用语', 'an': '名形词', 'b': '区别词', 'bl': '区别词性惯用语', 'c': '连词', 'cc': '并列连词', 'd': '副词', 'dg': '副词性语素', 'dl': '副词性惯用语', 'e': '叹词', 'ew': '句末标点', 'f': '方位词', 'h': '前缀', 'k': '后缀', 'm': '数词', 'mg': '数词性语素', 'mq': '数量词', 'n': '名词', 'ng': '名词性语素', 'nl': '名词性惯用语', 'nr': '汉语人名', 'nr1': '汉语姓氏', 'nr2': '汉语名字', 'nrf': '音译人名', 'nrj': '日语人名', 'ns': '地名', 'nsf': '音译地名', 'nt': '机构团体名', 'nz': '其他专名', 'o': '拟声词', 'p': '介词', 'pba': '介词“把”', 'pbei': '介词“被”', 'q': '量词', 'qt': '时量词', 'qv': '动量词', 'r': '代词', 'rg': '代词性语素', 'rr': '人称代词', 'ry': '疑问代词', 'rys': '处所疑问代词', 'ryt': '时间疑问代词', 'ryv': '谓词性疑问代词', 'rz': '指示代词', 'rzs': '处所指示代词', 'rzt': '时间指示代词', 'rzv': '谓词性指示代词', 's': '处所词', 't': '时间词', 'tg': '时间词性语素', 'u': '助词', 'udel': '的、底', 'ude2': '地', 'ude3': '得', 'udeng': '等、等等、云云', 'udh': '......的话', 'uguo': '过', 'ule': '了', 'ulian': '连', 'uls': '来讲、来说；而言、说来', 'usuo': '所', 'uyy': '一样、一般；似的、般', 'uzhe': '着', 'uzhi': '之', 'v': '动词', 'vd': '副动词', 'vf': '趋向动词', 'vg': '动词性语素', 'vi': '不及物动词', 'vl': '动词性惯用语', 'vn': '名动词', 'vshi': '动词“是”', 'vx': '形式动词', 'vyou': '动词“有”', 'w': '标点符号', 'wd': '逗号', 'wky': '右括号', 'wkz': '左括号', 'wm': '冒号', 'wn': '顿号', 'wp': '破折号', 'ws': '省略号', 'wy': '引号', 'x': '字符串', 'y': '语气词', 'z': '状态词'}
+
+ICTCLAS3={
+  "n": "名词",
+  "nr": "人名",
+  "nr1": "汉语姓氏",
+  "nr2": "汉语名字",
+  "nrj": "日语人名",
+  "nrf": "音译人名",
+  "ns": "地名",
+  "nsf": "音译地名",
+  "nt": "机构团体名",
+  "nz": "其它专名",
+  "nl": "名词性惯用语",
+  "ng": "名词性语素",
+  "t": "时间词",
+  "tg": "时间词性语素",
+  "s": "处所词",
+  "f": "方位词",
+  "v": "动词",
+  "vd": "副动词",
+  "vn": "名动词",
+  "vshi": "动词“是”",
+  "vyou": "动词“有”",
+  "vf": "趋向动词",
+  "vx": "形式动词",
+  "vi": "不及物动词（内动词）",
+  "vl": "动词性惯用语",
+  "vg": "动词性语素",
+  "a": "形容词",
+  "ad": "副形词",
+  "an": "名形词",
+  "ag": "形容词性语素",
+  "al": "形容词性惯用语",
+  "b": "区别词",
+  "bl": "区别词性惯用语",
+  "z": "状态词",
+  "r": "代词",
+  "rr": "人称代词",
+  "rz": "指示代词",
+  "rzt": "时间指示代词",
+  "rzs": "处所指示代词",
+  "rzv": "谓词性指示代词",
+  "ry": "疑问代词",
+  "ryt": "时间疑问代词",
+  "rys": "处所疑问代词",
+  "ryv": "谓词性疑问代词",
+  "rg": "代词性语素",
+  "m": "数词",
+  "mq": "数量词",
+  "q": "量词",
+  "qv": "动量词",
+  "qt": "时量词",
+  "d": "副词",
+  "p": "介词",
+  "pba": "介词“把”",
+  "pbei": "介词“被”",
+  "c": "连词",
+  "cc": "并列连词",
+  "u": "助词",
+  "uzhe": "着",
+  "ule": "了 喽",
+  "uguo": "过",
+  "ude1": "的 底",
+  "ude2": "地",
+  "ude3": "得",
+  "usuo": "所",
+  "udeng": "等 等等 云云",
+  "uyy": "一样 一般 似的 般",
+  "udh": "的话",
+  "uls": "来讲 来说 而言 说来",
+  "uzhi": "之",
+  "ulian": "连 （“连小学生都会”）",
+  "e": "叹词",
+  "y": "语气词",
+  "o": "拟声词",
+  "h": "前缀",
+  "k": "后缀",
+  "x": "字符串",
+  "xe": "Email字符串",
+  "xs": "微博会话分隔符",
+  "xm": "表情符合",
+  "xu": "网址URL",
+  "w": "标点符号",
+  "wkz": "左括号，全角：（ 〔  ［  ｛  《 【  〖 〈   半角：( [ { <",
+  "wky": "右括号，全角：） 〕  ］ ｝ 》  】 〗 〉 半角： ) ] { >",
+  "wyz": "左引号，全角：“ ‘ 『",
+  "wyy": "右引号，全角：” ’ 』",
+  "wj": "句号，全角：。",
+  "ww": "问号，全角：？ 半角：?",
+  "wt": "叹号，全角：！ 半角：!",
+  "wd": "逗号，全角：， 半角：,",
+  "wf": "分号，全角：； 半角： ;",
+  "wn": "顿号，全角：、",
+  "wm": "冒号，全角：： 半角： :",
+  "ws": "省略号，全角：……  …",
+  "wp": "破折号，全角：――   －－   ――－   半角：---  ----",
+  "wb": "百分号千分号，全角：％ ‰   半角：%",
+  "wh": "单位符号，全角：￥ ＄ ￡  °  ℃  半角：$"
+}
+
 thulac_tags={'n': '名词', 'np': '人名', 'ns': '地名', 'ni': '机构名', 'nz': '其它专名', 'm': '数词', 'q': '量词', 'mq': '数量词', 't': '时间词', 'f': '方位词', 's': '处所词', 'v': '动词', 'a': '形容词', 'd': '副词', 'h': '前接成分', 'k': '后接成分', 'i': '习语', 'j': '简称', 'r': '代词', 'c': '连词', 'p': '介词', 'u': '助词', 'y': '语气助词', 'e': '叹词', 'o': '拟声词', 'g': '语素', 'w': '标点', 'x': '其它'}
 
 LangCodes={'AA': ['阿法尔语', 'Afar'], 'AB': ['阿布哈兹语', 'Abkhaz'], 'AE': ['阿维斯陀语', 'Avestan'], 'AF': ['阿非利堪斯语', 'Afrikaans'], 'AK': ['阿坎语', 'Akan, Twi-Fante'], 'AM': ['阿姆哈拉语', 'Amharic'], 'AN': ['阿拉贡语', 'Aragonese'], 'AR': ['阿拉伯语', 'Arabic'], 'AS': ['阿萨姆语', 'Assamese'], 'AV': ['阿瓦尔语', 'Avaric'], 'AY': ['艾马拉语', 'Aymara'], 'AZ': ['阿塞拜疆语', 'Azerbaijani'], 'BA': ['巴什基尔语', 'Bashkir'], 'BE': ['白俄罗斯语', 'Belarusian'], 'BG': ['保加利亚语', 'Bulgarian'], 'BH': ['比哈尔语', 'Bihari'], 'BI': ['比斯拉玛语', 'Bislama'], 'BM': ['班巴拉语', 'Bambara'], 'BN': ['孟加拉语', 'Bengali'], 'BO': ['藏语', 'Tibetan Standard, Central Tibetan'], 'BR': ['布列塔尼语', 'Breton'], 'BS': ['波斯尼亚语', 'Bosnian'], 'CA': ['加泰隆语', 'Catalan;\xa0Valencian'], 'CE': ['车臣语', 'Chechen'], 'CH': ['查莫罗语', 'Chamorro'], 'CO': ['科西嘉语', 'Corsican'], 'CR': ['克里语', 'Cree'], 'CS': ['捷克语', 'Czech'], 'CU': ['教会斯拉夫语', 'Old Church Slavonic, Church Slavic, Church Slavonic, Old Bulgarian, Old Slavonic'], 'CV': ['楚瓦什语', 'Chuvash'], 'CY': ['威尔士语', 'Welsh'], 'DA': ['丹麦语', 'Danish'], 'DE': ['德语', 'German'], 'DV': ['迪维希语', 'Divehi; Dhivehi; Maldivian;'], 'DZ': ['不丹语', 'Dzongkha'], 'EE': ['埃维语', 'Ewe'], 'EL': ['现代希腊语', 'Greek, Modern'], 'EN': ['英语', 'English'], 'EO': ['世界语', 'Esperanto'], 'ES': ['西班牙语', 'Spanish; Castilian'], 'ET': ['爱沙尼亚语', 'Estonian'], 'EU': ['巴斯克语', 'Basque'], 'FA': ['波斯语', 'Persian'], 'FF': ['富拉语', 'Fula; Fulah; Pulaar; Pular'], 'FI': ['芬兰语', 'Finnish'], 'FJ': ['斐济语', 'Fijian'], 'FO': ['法罗斯语', 'Faroese'], 'FR': ['法语', 'French'], 'FY': ['弗里西亚语', 'Western Frisian'], 'GA': ['爱尔兰语', 'Irish'], 'GD': ['盖尔语（苏格兰语）', 'Scottish Gaelic; Gaelic'], 'GL': ['加利西亚语', 'Galician'], 'GN': ['瓜拉尼语', 'Guaraní'], 'GU': ['古吉拉特语', 'Gujarati'], 'GV': ['马恩岛语', 'Manx'], 'HA': ['豪萨语', 'Hausa'], 'HE': ['希伯来语', 'Hebrew\xa0(modern)'], 'HI': ['印地语', 'Hindi'], 'HO': ['希里莫图语', 'Hiri Motu'], 'HR': ['克罗地亚语', 'Croatian'], 'HT': ['海地克里奥尔语', 'Haitian; Haitian Creole'], 'HU': ['匈牙利语', 'Hungarian'], 'HY': ['亚美尼亚语', 'Armenian'], 'HZ': ['赫雷罗语', 'Herero'], 'I.E.': ['国际语E', 'Interlingue'], 'IA': ['国际语A', 'Interlingua'], 'ID': ['印尼语', 'Indonesian'], 'IG': ['伊博语', 'Igbo'], 'II': ['四川彝语（诺苏语）', 'Nuosu'], 'IK': ['依努庇克语', 'Inupiaq'], 'IO': ['伊多语', 'Ido'], 'IS': ['冰岛语', 'Icelandic'], 'IT': ['意大利语', 'Italian'], 'IU': ['伊努伊特语', 'Inuktitut'], 'JA': ['日语', 'Japanese'], 'JV': ['爪哇语', 'Javanese'], 'KA': ['格鲁吉亚语', 'Georgian'], 'KG': ['刚果语', 'Kongo'], 'KI': ['基库尤语', 'Kikuyu, Gikuyu'], 'KJ': ['夸尼亚玛语', 'Kwanyama, Kuanyama'], 'KK': ['哈萨克语', 'Kazakh'], 'KL': ['格陵兰语', 'Kalaallisut, Greenlandic'], 'KM': ['高棉语', 'Khmer, Cambodian'], 'KN': ['坎纳达语', 'Kannada'], 'KO': ['朝鲜语', 'Korean'], 'KR': ['卡努里语', 'Kanuri'], 'KS': ['克什米尔语', 'Kashmiri'], 'KU': ['库尔德语', 'Kurdish'], 'KV': ['科米语', 'Komi'], 'KW': ['康沃尔语', 'Cornish'], 'KY': ['吉尔吉斯语', 'Kirghiz, Kyrgyz'], 'LA': ['拉丁语', 'Latin'], 'LB': ['卢森堡语', 'Luxembourgish, Letzeburgesch'], 'LG': ['干达语', 'Luganda'], 'LI': ['林堡语', 'Limburgish, Limburgan, Limburger'], 'LN': ['林加拉语', 'Lingala'], 'LO': ['老挝语', 'Lao'], 'LT': ['立陶宛语', 'Lithuanian'], 'LU': ['卢巴—加丹加语', 'Luba-Katanga'], 'LV': ['拉脱维亚语', 'Latvian'], 'MG': ['马达加斯加语', 'Malagasy'], 'MH': ['马绍尔语', 'Marshallese'], 'MI': ['毛利语', 'Māori'], 'MK': ['马其顿语', 'Macedonian'], 'ML': ['马拉亚拉姆语', 'Malayalam'], 'MN': ['蒙古语', 'Mongolian'], 'MR': ['马拉提语', 'Marathi (Marāṭhī)'], 'MS': ['马来语', 'Malay'], 'MT': ['马耳他语', 'Maltese'], 'MY': ['缅甸语', 'Burmese'], 'NA': ['瑙鲁语', 'Nauru'], 'NB': ['挪威布克摩尔语', 'Norwegian Bokmål'], 'ND': ['北恩德贝勒语', 'North Ndebele'], 'NE': ['尼泊尔语', 'Nepali'], 'NG': ['恩敦加语', 'Ndonga'], 'NL': ['荷兰语', 'Dutch'], 'NN': ['尼诺斯克挪威语', 'Norwegian Nynorsk'], 'NO': ['挪威语', 'Norwegian'], 'NR': ['南恩德贝勒语', 'South Ndebele'], 'NV': ['纳瓦霍语', 'Navajo, Navaho'], 'NY': ['尼扬贾语', 'Chichewa; Chewa; Nyanja'], 'OC': ['普罗旺斯语', 'Occitan'], 'OJ': ['奥吉布瓦语', 'Ojibwe, Ojibwa'], 'OM': ['阿芳•奥洛莫语', 'Oromo'], 'OR': ['奥利亚语', 'Oriya'], 'OS': ['奥塞梯语', 'Ossetian, Ossetic'], 'PA': ['旁遮普语', 'Panjabi, Punjabi'], 'PI': ['巴利语', 'Pāli'], 'PL': ['波兰语', 'Polish'], 'PS': ['普什图语', 'Pashto, Pushto'], 'PT': ['葡萄牙语', 'Portuguese'], 'QU': ['凯楚亚语', 'Quechua'], 'RM': ['罗曼语', 'Romansh'], 'RN': ['基隆迪语', 'Kirundi'], 'RO': ['罗马尼亚语', 'Romanian,\xa0Moldavian, Moldovan'], 'RU': ['俄语', 'Russian'], 'RW': ['基尼阿万达语', 'Kinyarwanda'], 'SA': ['梵语', 'Sanskrit (Saṁskṛta)'], 'SC': ['撒丁语', 'Sardinian'], 'SD': ['信德语', 'Sindhi'], 'SE': ['北萨摩斯语', 'Northern Sami'], 'SG': ['桑戈语', 'Sango'], 'SI': ['僧加罗语', 'Sinhala, Sinhalese'], 'SK': ['斯洛伐克语', 'Slovak'], 'SL': ['斯洛文尼亚语', 'Slovene'], 'SM': ['萨摩亚语', 'Samoan'], 'SN': ['绍纳语', 'Shona'], 'SO': ['索马里语', 'Somali'], 'SQ': ['阿尔巴尼亚语', 'Albanian'], 'SR': ['塞尔维亚语', 'Serbian'], 'SS': ['塞斯瓦特语', 'Swati'], 'ST': ['南索托语', 'Southern Sotho'], 'SU': ['巽他语', 'Sundanese'], 'SV': ['瑞典语', 'Swedish'], 'SW': ['斯瓦希里语', 'Swahili'], 'TA': ['泰米尔语', 'Tamil'], 'TE': ['泰卢固语', 'Telugu'], 'TG': ['塔吉克语', 'Tajik'], 'TH': ['泰语', 'Thai'], 'TI': ['提格里尼亚语', 'Tigrinya'], 'TK': ['土库曼语', 'Turkmen'], 'TL': ['他加禄语', 'Tagalog'], 'TN': ['塞茨瓦纳语', 'Tswana'], 'TO': ['汤加语', 'Tongan'], 'TR': ['土耳其语', 'Turkish'], 'TS': ['宗加语', 'Tsonga'], 'TT': ['塔塔尔语', 'Tatar'], 'TW': ['特威语', 'Twi'], 'TY': ['塔希提语', 'Tahitian'], 'UG': ['维吾尔语', 'Uighur, Uyghur'], 'UK': ['乌克兰语', 'Ukrainian'], 'UR': ['乌尔都语', 'Urdu'], 'UZ': ['乌兹别克语', 'Uzbek'], 'VE': ['文达语', 'Venda'], 'VI': ['越南语', 'Vietnamese'], 'VO': ['沃拉普克语', 'Volapük'], 'WA': ['瓦隆语', 'Walloon'], 'WO': ['沃洛夫语', 'Wolof'], 'XH': ['科萨语', 'Xhosa'], 'YI': ['依地语', 'Yiddish'], 'YO': ['约鲁巴语', 'Yoruba'], 'ZA': ['壮语', 'Zhuang, Chuang'], 'ZH': ['汉语（中文）', 'Chinese'], 'ZU': ['祖鲁语', 'Zulu']}
+
+claws_c7_tags = {
+    "APPGE": {
+        "description": "possessive pronoun, pre-nominal",
+        "chinese_translation": "前置所有格代词",
+        "examples": ["my", "your", "our"]
+    },
+    "AT": {
+        "description": "article",
+        "chinese_translation": "冠词",
+        "examples": ["the", "no"]
+    },
+    "AT1": {
+        "description": "singular article",
+        "chinese_translation": "单数冠词",
+        "examples": ["a", "an", "every"]
+    },
+    "BCL": {
+        "description": "before-clause marker",
+        "chinese_translation": "从句引导标记",
+        "examples": ["in order (that)", "in order (to)"]
+    },
+    "CC": {
+        "description": "coordinating conjunction",
+        "chinese_translation": "并列连词",
+        "examples": ["and", "or"]
+    },
+    "CCB": {
+        "description": "adversative coordinating conjunction",
+        "chinese_translation": "转折并列连词",
+        "examples": ["but"]
+    },
+    "CS": {
+        "description": "subordinating conjunction",
+        "chinese_translation": "从属连词",
+        "examples": ["if", "because", "unless", "so", "for"]
+    },
+    "CSA": {
+        "description": "as (as conjunction)",
+        "chinese_translation": "连词as",
+        "examples": ["as"]
+    },
+    "CSN": {
+        "description": "than (as conjunction)",
+        "chinese_translation": "连词than",
+        "examples": ["than"]
+    },
+    "CST": {
+        "description": "that (as conjunction)",
+        "chinese_translation": "连词that",
+        "examples": ["that"]
+    },
+    "CSW": {
+        "description": "whether (as conjunction)",
+        "chinese_translation": "连词whether",
+        "examples": ["whether"]
+    },
+    "DA": {
+        "description": "after-determiner or post-determiner capable of pronominal function",
+        "chinese_translation": "后位限定词(可代指)",
+        "examples": ["such", "former", "same"]
+    },
+    "DA1": {
+        "description": "singular after-determiner",
+        "chinese_translation": "单数后位限定词",
+        "examples": ["little", "much"]
+    },
+    "DA2": {
+        "description": "plural after-determiner",
+        "chinese_translation": "复数后位限定词",
+        "examples": ["few", "several", "many"]
+    },
+    "DAR": {
+        "description": "comparative after-determiner",
+        "chinese_translation": "比较级后位限定词",
+        "examples": ["more", "less", "fewer"]
+    },
+    "DAT": {
+        "description": "superlative after-determiner",
+        "chinese_translation": "最高级后位限定词",
+        "examples": ["most", "least", "fewest"]
+    },
+    "DB": {
+        "description": "before determiner or pre-determiner capable of pronominal function",
+        "chinese_translation": "前位限定词(可代指)",
+        "examples": ["all", "half"]
+    },
+    "DB2": {
+        "description": "plural before-determiner",
+        "chinese_translation": "复数前位限定词",
+        "examples": ["both"]
+    },
+    "DD": {
+        "description": "determiner (capable of pronominal function)",
+        "chinese_translation": "限定词(可代指)",
+        "examples": ["any", "some"]
+    },
+    "DD1": {
+        "description": "singular determiner",
+        "chinese_translation": "单数限定词",
+        "examples": ["this", "that", "another"]
+    },
+    "DD2": {
+        "description": "plural determiner",
+        "chinese_translation": "复数限定词",
+        "examples": ["these", "those"]
+    },
+    "DDQ": {
+        "description": "wh-determiner",
+        "chinese_translation": "wh-限定词",
+        "examples": ["which", "what"]
+    },
+    "DDQGE": {
+        "description": "wh-determiner, genitive",
+        "chinese_translation": "属格wh-限定词",
+        "examples": ["whose"]
+    },
+    "DDQV": {
+        "description": "wh-ever determiner",
+        "chinese_translation": "wh-ever类限定词",
+        "examples": ["whichever", "whatever"]
+    },
+    "EX": {
+        "description": "existential there",
+        "chinese_translation": "存在型there",
+        "examples": ["there"]
+    },
+    "FO": {
+        "description": "formula",
+        "chinese_translation": "公式语",
+        "examples": []
+    },
+    "FU": {
+        "description": "unclassified word",
+        "chinese_translation": "未分类词",
+        "examples": []
+    },
+    "FW": {
+        "description": "foreign word",
+        "chinese_translation": "外来词",
+        "examples": []
+    },
+    "GE": {
+        "description": "germanic genitive marker",
+        "chinese_translation": "日耳曼语属格标记",
+        "examples": ["'", "s"]
+    },
+    "IF": {
+        "description": "for (as preposition)",
+        "chinese_translation": "介词for",
+        "examples": ["for"]
+    },
+    "II": {
+        "description": "general preposition",
+        "chinese_translation": "普通介词",
+        "examples": []
+    },
+    "IO": {
+        "description": "of (as preposition)",
+        "chinese_translation": "介词of",
+        "examples": ["of"]
+    },
+    "IW": {
+        "description": "with, without (as prepositions)",
+        "chinese_translation": "介词with/without",
+        "examples": ["with", "without"]
+    },
+    "JJ": {
+        "description": "general adjective",
+        "chinese_translation": "普通形容词",
+        "examples": []
+    },
+    "JJR": {
+        "description": "general comparative adjective",
+        "chinese_translation": "普通比较级形容词",
+        "examples": ["older", "better", "stronger"]
+    },
+    "JJT": {
+        "description": "general superlative adjective",
+        "chinese_translation": "普通最高级形容词",
+        "examples": ["oldest", "best", "strongest"]
+    },
+    "JK": {
+        "description": "catenative adjective",
+        "chinese_translation": "链接形容词",
+        "examples": ["able in be able to", "willing in be willing to"]
+    },
+    "MC": {
+        "description": "cardinal number, neutral for number",
+        "chinese_translation": "基数词(数中性)",
+        "examples": ["two", "three"]
+    },
+    "MC1": {
+        "description": "singular cardinal number",
+        "chinese_translation": "单数基数词",
+        "examples": ["one"]
+    },
+    "MC2": {
+        "description": "plural cardinal number",
+        "chinese_translation": "复数基数词",
+        "examples": ["sixes", "sevens"]
+    },
+    "MCGE": {
+        "description": "genitive cardinal number, neutral for number",
+        "chinese_translation": "属格基数词(数中性)",
+        "examples": ["two's", "100's"]
+    },
+    "MCMC": {
+        "description": "hyphenated number",
+        "chinese_translation": "连字符数字",
+        "examples": ["40-50", "1770-1827"]
+    },
+    "MD": {
+        "description": "ordinal number",
+        "chinese_translation": "序数词",
+        "examples": ["first", "second", "next", "last"]
+    },
+    "MF": {
+        "description": "fraction, neutral for number",
+        "chinese_translation": "分数(数中性)",
+        "examples": ["quarters", "two-thirds"]
+    },
+    "ND1": {
+        "description": "singular noun of direction",
+        "chinese_translation": "单数方位名词",
+        "examples": ["north", "southeast"]
+    },
+    "NN": {
+        "description": "common noun, neutral for number",
+        "chinese_translation": "普通名词(数中性)",
+        "examples": ["sheep", "cod", "headquarters"]
+    },
+    "NN1": {
+        "description": "singular common noun",
+        "chinese_translation": "单数普通名词",
+        "examples": ["book", "girl"]
+    },
+    "NN2": {
+        "description": "plural common noun",
+        "chinese_translation": "复数普通名词",
+        "examples": ["books", "girls"]
+    },
+    "NNA": {
+        "description": "following noun of title",
+        "chinese_translation": "头衔后置名词",
+        "examples": ["M.A."]
+    },
+    "NNB": {
+        "description": "preceding noun of title",
+        "chinese_translation": "头衔前置名词",
+        "examples": ["Mr.", "Prof."]
+    },
+    "NNL1": {
+        "description": "singular locative noun",
+        "chinese_translation": "单数方位名词",
+        "examples": ["Island", "Street"]
+    },
+    "NNL2": {
+        "description": "plural locative noun",
+        "chinese_translation": "复数方位名词",
+        "examples": ["Islands", "Streets"]
+    },
+    "NNO": {
+        "description": "numeral noun, neutral for number",
+        "chinese_translation": "数量名词(数中性)",
+        "examples": ["dozen", "hundred"]
+    },
+    "NNO2": {
+        "description": "numeral noun, plural",
+        "chinese_translation": "复数数量名词",
+        "examples": ["hundreds", "thousands"]
+    },
+    "NNT1": {
+        "description": "temporal noun, singular",
+        "chinese_translation": "单数时间名词",
+        "examples": ["day", "week", "year"]
+    },
+    "NNT2": {
+        "description": "temporal noun, plural",
+        "chinese_translation": "复数时间名词",
+        "examples": ["days", "weeks", "years"]
+    },
+    "NNU": {
+        "description": "unit of measurement, neutral for number",
+        "chinese_translation": "计量单位(数中性)",
+        "examples": ["in", "cc"]
+    },
+    "NNU1": {
+        "description": "singular unit of measurement",
+        "chinese_translation": "单数计量单位",
+        "examples": ["inch", "centimetre"]
+    },
+    "NNU2": {
+        "description": "plural unit of measurement",
+        "chinese_translation": "复数计量单位",
+        "examples": ["ins.", "feet"]
+    },
+    "NP": {
+        "description": "proper noun, neutral for number",
+        "chinese_translation": "专有名词(数中性)",
+        "examples": ["IBM", "Andes"]
+    },
+    "NP1": {
+        "description": "singular proper noun",
+        "chinese_translation": "单数专有名词",
+        "examples": ["London", "Jane", "Frederick"]
+    },
+    "NP2": {
+        "description": "plural proper noun",
+        "chinese_translation": "复数专有名词",
+        "examples": ["Browns", "Reagans", "Koreas"]
+    },
+    "NPD1": {
+        "description": "singular weekday noun",
+        "chinese_translation": "单数星期名词",
+        "examples": ["Sunday"]
+    },
+    "NPD2": {
+        "description": "plural weekday noun",
+        "chinese_translation": "复数星期名词",
+        "examples": ["Sundays"]
+    },
+    "NPM1": {
+        "description": "singular month noun",
+        "chinese_translation": "单数月份名词",
+        "examples": ["October"]
+    },
+    "NPM2": {
+        "description": "plural month noun",
+        "chinese_translation": "复数月份名词",
+        "examples": ["Octobers"]
+    },
+    "PN": {
+        "description": "indefinite pronoun, neutral for number",
+        "chinese_translation": "不定代词(数中性)",
+        "examples": ["none"]
+    },
+    "PN1": {
+        "description": "indefinite pronoun, singular",
+        "chinese_translation": "单数不定代词",
+        "examples": ["anyone", "everything", "nobody", "one"]
+    },
+    "PNQO": {
+        "description": "objective wh-pronoun",
+        "chinese_translation": "宾格wh-代词",
+        "examples": ["whom"]
+    },
+    "PNQS": {
+        "description": "subjective wh-pronoun",
+        "chinese_translation": "主格wh-代词",
+        "examples": ["who"]
+    },
+    "PNQV": {
+        "description": "wh-ever pronoun",
+        "chinese_translation": "wh-ever类代词",
+        "examples": ["whoever"]
+    },
+    "PNX1": {
+        "description": "reflexive indefinite pronoun",
+        "chinese_translation": "反身不定代词",
+        "examples": ["oneself"]
+    },
+    "PPGE": {
+        "description": "nominal possessive personal pronoun",
+        "chinese_translation": "名词性物主代词",
+        "examples": ["mine", "yours"]
+    },
+    "PPH1": {
+        "description": "3rd person sing. neuter personal pronoun",
+        "chinese_translation": "第三人称单数中性人称代词",
+        "examples": ["it"]
+    },
+    "PPHO1": {
+        "description": "3rd person sing. objective personal pronoun",
+        "chinese_translation": "第三人称单数宾格人称代词",
+        "examples": ["him", "her"]
+    },
+    "PPHO2": {
+        "description": "3rd person plural objective personal pronoun",
+        "chinese_translation": "第三人称复数宾格人称代词",
+        "examples": ["them"]
+    },
+    "PPHS1": {
+        "description": "3rd person sing. subjective personal pronoun",
+        "chinese_translation": "第三人称单数主格人称代词",
+        "examples": ["he", "she"]
+    },
+    "PPHS2": {
+        "description": "3rd person plural subjective personal pronoun",
+        "chinese_translation": "第三人称复数主格人称代词",
+        "examples": ["they"]
+    },
+    "PPIO1": {
+        "description": "1st person sing. objective personal pronoun",
+        "chinese_translation": "第一人称单数宾格人称代词",
+        "examples": ["me"]
+    },
+    "PPIO2": {
+        "description": "1st person plural objective personal pronoun",
+        "chinese_translation": "第一人称复数宾格人称代词",
+        "examples": ["us"]
+    },
+    "PPIS1": {
+        "description": "1st person sing. subjective personal pronoun",
+        "chinese_translation": "第一人称单数主格人称代词",
+        "examples": ["I"]
+    },
+    "PPIS2": {
+        "description": "1st person plural subjective personal pronoun",
+        "chinese_translation": "第一人称复数主格人称代词",
+        "examples": ["we"]
+    },
+    "PPX1": {
+        "description": "singular reflexive personal pronoun",
+        "chinese_translation": "单数反身代词",
+        "examples": ["yourself", "itself"]
+    },
+    "PPX2": {
+        "description": "plural reflexive personal pronoun",
+        "chinese_translation": "复数反身代词",
+        "examples": ["yourselves", "themselves"]
+    },
+    "PPY": {
+        "description": "2nd person personal pronoun",
+        "chinese_translation": "第二人称代词",
+        "examples": ["you"]
+    },
+    "RA": {
+        "description": "adverb, after nominal head",
+        "chinese_translation": "名词后置副词",
+        "examples": ["else", "galore"]
+    },
+    "REX": {
+        "description": "adverb introducing appositional constructions",
+        "chinese_translation": "同位语引导副词",
+        "examples": ["namely", "e.g."]
+    },
+    "RG": {
+        "description": "degree adverb",
+        "chinese_translation": "程度副词",
+        "examples": ["very", "so", "too"]
+    },
+    "RGQ": {
+        "description": "wh- degree adverb",
+        "chinese_translation": "wh-程度副词",
+        "examples": ["how"]
+    },
+    "RGQV": {
+        "description": "wh-ever degree adverb",
+        "chinese_translation": "wh-ever类程度副词",
+        "examples": ["however"]
+    },
+    "RGR": {
+        "description": "comparative degree adverb",
+        "chinese_translation": "比较级程度副词",
+        "examples": ["more", "less"]
+    },
+    "RGT": {
+        "description": "superlative degree adverb",
+        "chinese_translation": "最高级程度副词",
+        "examples": ["most", "least"]
+    },
+    "RL": {
+        "description": "locative adverb",
+        "chinese_translation": "方位副词",
+        "examples": ["alongside", "forward"]
+    },
+    "RP": {
+        "description": "prep. adverb, particle",
+        "chinese_translation": "介词副词/小品词",
+        "examples": ["about", "in"]
+    },
+    "RPK": {
+        "description": "prep. adv., catenative",
+        "chinese_translation": "链接介词副词",
+        "examples": ["about in be about to"]
+    },
+    "RR": {
+        "description": "general adverb",
+        "chinese_translation": "普通副词",
+        "examples": []
+    },
+    "RRQ": {
+        "description": "wh- general adverb",
+        "chinese_translation": "wh-普通副词",
+        "examples": ["where", "when", "why", "how"]
+    },
+    "RRQV": {
+        "description": "wh-ever general adverb",
+        "chinese_translation": "wh-ever类普通副词",
+        "examples": ["wherever", "whenever"]
+    },
+    "RRR": {
+        "description": "comparative general adverb",
+        "chinese_translation": "比较级普通副词",
+        "examples": ["better", "longer"]
+    },
+    "RRT": {
+        "description": "superlative general adverb",
+        "chinese_translation": "最高级普通副词",
+        "examples": ["best", "longest"]
+    },
+    "RT": {
+        "description": "quasi-nominal adverb of time",
+        "chinese_translation": "准名词性时间副词",
+        "examples": ["now", "tomorrow"]
+    },
+    "TO": {
+        "description": "infinitive marker",
+        "chinese_translation": "不定式标记",
+        "examples": ["to"]
+    },
+    "UH": {
+        "description": "interjection",
+        "chinese_translation": "感叹词",
+        "examples": ["oh", "yes", "um"]
+    },
+    "VB0": {
+        "description": "be, base form (finite i.e. imperative, subjunctive)",
+        "chinese_translation": "be动词原形(限定形式，如祈使/虚拟)",
+        "examples": []
+    },
+    "VBDR": {
+        "description": "were",
+        "chinese_translation": "were",
+        "examples": ["were"]
+    },
+    "VBDZ": {
+        "description": "was",
+        "chinese_translation": "was",
+        "examples": ["was"]
+    },
+    "VBG": {
+        "description": "being",
+        "chinese_translation": "being",
+        "examples": ["being"]
+    },
+    "VBI": {
+        "description": "be, infinitive",
+        "chinese_translation": "be不定式",
+        "examples": ["To be or not...", "It will be ..."]
+    },
+    "VBM": {
+        "description": "am",
+        "chinese_translation": "am",
+        "examples": ["am"]
+    },
+    "VBN": {
+        "description": "been",
+        "chinese_translation": "been",
+        "examples": ["been"]
+    },
+    "VBR": {
+        "description": "are",
+        "chinese_translation": "are",
+        "examples": ["are"]
+    },
+    "VBZ": {
+        "description": "is",
+        "chinese_translation": "is",
+        "examples": ["is"]
+    },
+    "VD0": {
+        "description": "do, base form (finite)",
+        "chinese_translation": "do动词原形(限定形式)",
+        "examples": []
+    },
+    "VDD": {
+        "description": "did",
+        "chinese_translation": "did",
+        "examples": ["did"]
+    },
+    "VDG": {
+        "description": "doing",
+        "chinese_translation": "doing",
+        "examples": ["doing"]
+    },
+    "VDI": {
+        "description": "do, infinitive",
+        "chinese_translation": "do不定式",
+        "examples": ["I may do...", "To do..."]
+    },
+    "VDN": {
+        "description": "done",
+        "chinese_translation": "done",
+        "examples": ["done"]
+    },
+    "VDZ": {
+        "description": "does",
+        "chinese_translation": "does",
+        "examples": ["does"]
+    },
+    "VH0": {
+        "description": "have, base form (finite)",
+        "chinese_translation": "have动词原形(限定形式)",
+        "examples": []
+    },
+    "VHD": {
+        "description": "had (past tense)",
+        "chinese_translation": "had(过去式)",
+        "examples": ["had"]
+    },
+    "VHG": {
+        "description": "having",
+        "chinese_translation": "having",
+        "examples": ["having"]
+    },
+    "VHI": {
+        "description": "have, infinitive",
+        "chinese_translation": "have不定式",
+        "examples": []
+    },
+    "VHN": {
+        "description": "had (past participle)",
+        "chinese_translation": "had(过去分词)",
+        "examples": ["had"]
+    },
+    "VHZ": {
+        "description": "has",
+        "chinese_translation": "has",
+        "examples": ["has"]
+    },
+    "VM": {
+        "description": "modal auxiliary",
+        "chinese_translation": "情态助动词",
+        "examples": ["can", "will", "would"]
+    },
+    "VMK": {
+        "description": "modal catenative",
+        "chinese_translation": "链接情态动词",
+        "examples": ["ought", "used"]
+    },
+    "VV0": {
+        "description": "base form of lexical verb",
+        "chinese_translation": "实义动词原形",
+        "examples": ["give", "work"]
+    },
+    "VVD": {
+        "description": "past tense of lexical verb",
+        "chinese_translation": "实义动词过去式",
+        "examples": ["gave", "worked"]
+    },
+    "VVG": {
+        "description": "-ing participle of lexical verb",
+        "chinese_translation": "实义动词-ing分词",
+        "examples": ["giving", "working"]
+    },
+    "VVGK": {
+        "description": "-ing participle catenative",
+        "chinese_translation": "链接-ing分词",
+        "examples": ["going in be going to"]
+    },
+    "VVI": {
+        "description": "infinitive",
+        "chinese_translation": "不定式",
+        "examples": ["to give...", "It will work..."]
+    },
+    "VVN": {
+        "description": "past participle of lexical verb",
+        "chinese_translation": "实义动词过去分词",
+        "examples": ["given", "worked"]
+    },
+    "VVNK": {
+        "description": "past participle catenative",
+        "chinese_translation": "链接过去分词",
+        "examples": ["bound in be bound to"]
+    },
+    "VVZ": {
+        "description": "-s form of lexical verb",
+        "chinese_translation": "实义动词-s形式",
+        "examples": ["gives", "works"]
+    },
+    "XX": {
+        "description": "not, n't",
+        "chinese_translation": "否定词not/n't",
+        "examples": ["not", "n't"]
+    },
+    "ZZ1": {
+        "description": "singular letter of the alphabet",
+        "chinese_translation": "单数字母",
+        "examples": ["A", "b"]
+    },
+    "ZZ2": {
+        "description": "plural letter of the alphabet",
+        "chinese_translation": "复数字母",
+        "examples": ["A's", "b's"]
+    }
+}
+
+spacy_pos_tags = {
+    "$": {
+        "description": "Dollar sign",
+        "chinese_translation": "美元符号",
+        "examples": ["$"]
+    },
+    "''": {
+        "description": "Closing quotation mark",
+        "chinese_translation": "闭合引号",
+        "examples": ["'"]
+    },
+    ",": {
+        "description": "Comma",
+        "chinese_translation": "逗号",
+        "examples": [","]
+    },
+    "-LRB-": {
+        "description": "Left round bracket (i.e., '(')",
+        "chinese_translation": "左圆括号",
+        "examples": ["("]
+    },
+    "-RRB-": {
+        "description": "Right round bracket (i.e., ')')",
+        "chinese_translation": "右圆括号",
+        "examples": [")"]
+    },
+    ".": {
+        "description": "Sentence-final punctuation",
+        "chinese_translation": "句末标点",
+        "examples": ["."]
+    },
+    ":": {
+        "description": "Colon, semi-colon, or dash",
+        "chinese_translation": "冒号、分号或破折号",
+        "examples": [":", ";", "-"]
+    },
+    "ADD": {
+        "description": "Email address",
+        "chinese_translation": "电子邮件地址",
+        "examples": ["example@example.com"]
+    },
+    "AFX": {
+        "description": "Affix",
+        "chinese_translation": "词缀",
+        "examples": ["un-", "re-", "-ing"]
+    },
+    "CC": {
+        "description": "Coordinating conjunction",
+        "chinese_translation": "并列连词",
+        "examples": ["and", "but", "or"]
+    },
+    "CD": {
+        "description": "Cardinal number",
+        "chinese_translation": "基数",
+        "examples": ["one", "two", "three"]
+    },
+    "DT": {
+        "description": "Determiner",
+        "chinese_translation": "限定词",
+        "examples": ["the", "a", "an"]
+    },
+    "EX": {
+        "description": "Existential 'there'",
+        "chinese_translation": "存在句中的there",
+        "examples": ["there"]
+    },
+    "FW": {
+        "description": "Foreign word",
+        "chinese_translation": "外来词",
+        "examples": ["rendezvous", "schadenfreude"]
+    },
+    "HYPH": {
+        "description": "Hyphen",
+        "chinese_translation": "连字符",
+        "examples": ["-"]
+    },
+    "IN": {
+        "description": "Preposition or subordinating conjunction",
+        "chinese_translation": "介词或从属连词",
+        "examples": ["in", "on", "at", "if", "because"]
+    },
+    "JJ": {
+        "description": "Adjective",
+        "chinese_translation": "形容词",
+        "examples": ["happy", "sad", "big"]
+    },
+    "JJR": {
+        "description": "Adjective, comparative",
+        "chinese_translation": "形容词比较级",
+        "examples": ["happier", "sadder", "bigger"]
+    },
+    "JJS": {
+        "description": "Adjective, superlative",
+        "chinese_translation": "形容词最高级",
+        "examples": ["happiest", "saddest", "biggest"]
+    },
+    "LS": {
+        "description": "List item marker",
+        "chinese_translation": "列表项标记",
+        "examples": ["1.", "2.", "3."]
+    },
+    "MD": {
+        "description": "Modal",
+        "chinese_translation": "情态动词",
+        "examples": ["can", "could", "may"]
+    },
+    "NFP": {
+        "description": "Superfluous punctuation",
+        "chinese_translation": "多余的标点符号",
+        "examples": ["..."]
+    },
+    "NN": {
+        "description": "Noun, singular or mass",
+        "chinese_translation": "单数或质量名词",
+        "examples": ["cat", "water", "sand"]
+    },
+    "NNP": {
+        "description": "Proper noun, singular",
+        "chinese_translation": "单数专有名词",
+        "examples": ["John", "London", "Everest"]
+    },
+    "NNPS": {
+        "description": "Proper noun, plural",
+        "chinese_translation": "复数专有名词",
+        "examples": ["Smiths", "Alps"]
+    },
+    "NNS": {
+        "description": "Noun, plural",
+        "chinese_translation": "复数名词",
+        "examples": ["cats", "dogs", "houses"]
+    },
+    "PDT": {
+        "description": "Predeterminer",
+        "chinese_translation": "前位限定词",
+        "examples": ["all", "both", "half"]
+    },
+    "POS": {
+        "description": "Possessive ending",
+        "chinese_translation": "所有格结尾",
+        "examples": ["'s"]
+    },
+    "PRP": {
+        "description": "Personal pronoun",
+        "chinese_translation": "人称代词",
+        "examples": ["I", "you", "he"]
+    },
+    "PRP$": {
+        "description": "Possessive pronoun",
+        "chinese_translation": "所有格代词",
+        "examples": ["my", "your", "his"]
+    },
+    "RB": {
+        "description": "Adverb",
+        "chinese_translation": "副词",
+        "examples": ["quickly", "happily", "sadly"]
+    },
+    "RBR": {
+        "description": "Adverb, comparative",
+        "chinese_translation": "副词比较级",
+        "examples": ["faster", "happier", "more quickly"]
+    },
+    "RBS": {
+        "description": "Adverb, superlative",
+        "chinese_translation": "副词最高级",
+        "examples": ["fastest", "happiest", "most quickly"]
+    },
+    "RP": {
+        "description": "Particle",
+        "chinese_translation": "小品词",
+        "examples": ["up", "down", "off"]
+    },
+    "SYM": {
+        "description": "Symbol",
+        "chinese_translation": "符号",
+        "examples": ["+", "=", "<"]
+    },
+    "TO": {
+        "description": "'to'",
+        "chinese_translation": "'to'",
+        "examples": ["to"]
+    },
+    "UH": {
+        "description": "Interjection",
+        "chinese_translation": "感叹词",
+        "examples": ["oh", "ah", "wow"]
+    },
+    "VB": {
+        "description": "Verb, base form",
+        "chinese_translation": "动词原形",
+        "examples": ["run", "jump", "eat"]
+    },
+    "VBD": {
+        "description": "Verb, past tense",
+        "chinese_translation": "动词过去式",
+        "examples": ["ran", "jumped", "ate"]
+    },
+    "VBG": {
+        "description": "Verb, gerund or present participle",
+        "chinese_translation": "动词动名词或现在分词",
+        "examples": ["running", "jumping", "eating"]
+    },
+    "VBN": {
+        "description": "Verb, past participle",
+        "chinese_translation": "动词过去分词",
+        "examples": ["run", "jumped", "eaten"]
+    },
+    "VBP": {
+        "description": "Verb, non-3rd person singular present",
+        "chinese_translation": "动词非第三人称单数现在式",
+        "examples": ["run", "jump", "eat"]
+    },
+    "VBZ": {
+        "description": "Verb, 3rd person singular present",
+        "chinese_translation": "动词第三人称单数现在式",
+        "examples": ["runs", "jumps", "eats"]
+    },
+    "WDT": {
+        "description": "Wh-determiner",
+        "chinese_translation": "Wh限定词",
+        "examples": ["which", "that", "what"]
+    },
+    "WP": {
+        "description": "Wh-pronoun",
+        "chinese_translation": "Wh代词",
+        "examples": ["who", "whom", "what"]
+    },
+    "WP$": {
+        "description": "Possessive wh-pronoun",
+        "chinese_translation": "所有格Wh代词",
+        "examples": ["whose"]
+    },
+    "WRB": {
+        "description": "Wh-adverb",
+        "chinese_translation": "Wh副词",
+        "examples": ["where", "when", "why"]
+    },
+    "XX": {
+        "description": "Unknown",
+        "chinese_translation": "未知",
+        "examples": []
+    },
+    "_SP": {
+        "description": "Space",
+        "chinese_translation": "空格",
+        "examples": [" "]
+    },
+    "``": {
+        "description": "Opening quotation mark",
+        "chinese_translation": "开放引号",
+        "examples": ["`"]
+    }
+}
+
 
 def word_list(split_words):
     """
@@ -670,6 +1712,14 @@ def remove_empty_folders(folder_path):
     print(delet_root)
     print("Folders removed: ",len(delet_root))
 
+def remove_file(file_path):
+    import os
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f'{file_path} removed!')
+    else:
+        print(f"{file_path} doesn't exist")
+            
 def concatenate_excel_files(directory_path, output_file):
     # List to hold DataFrames
     dataframes = []
@@ -1799,8 +2849,8 @@ Showing download progress and speed when audio-visual files like MP4, MP3, JPG e
 import time
 from contextlib import closing 
 
-def audiovisual_downloader(url, path, headers=None):
-    with closing(requests.get(url, stream=True, headers=headers)) as r:
+def audiovisual_downloader(url, path, headers=None, params=None, cookies=None):
+    with closing(requests.get(url, stream=True, headers=headers, params=params, cookies=cookies)) as r:
         chunk_size=1024*10
         content_size=int(r.headers['content-length'])
         print('Initiating download...')
@@ -1809,7 +2859,7 @@ def audiovisual_downloader(url, path, headers=None):
             for chunk in r.iter_content(chunk_size=chunk_size):
                 f.write(chunk)
                 p.output()
- 
+                
 class ProgressData(object):
     def __init__(self, block, size, unit, file_name='', ):
         self.file_name=file_name
@@ -2066,13 +3116,46 @@ def format_float(number, decimal_places=2):
     formatted_number="{:.{precision}f}".format(number, precision=decimal_places)
     return formatted_number
 
+
+def mhtml2html(input_file_path, output_file_path=None):
+    """
+    Extracts HTML content from an MHTML file. Optionally saves it to an HTML file and returns the HTML string.
+
+    Parameters:
+    input_file_path (str): The path to the MHTML file.
+    output_file_path (str, optional): The path to the output HTML file. If None, the HTML content will not be saved.
+
+    Returns:
+    str: The extracted HTML content.
+    """
+    import pimht
+    mhtml = pimht.from_filename(input_file_path)
+    longest_length = 0
+    html_content = ""
+
+    for mhtml_part in mhtml:
+        if "text/html" in mhtml_part.content_type:
+            possible_html = mhtml_part.text
+            current_length = len(possible_html)
+            if current_length > longest_length:
+                longest_length = current_length
+                html_content = possible_html
+
+    if output_file_path:
+        with open(output_file_path, 'w', encoding='utf-8') as file:
+            file.write(html_content)
+        print(f"HTML content successfully saved to {output_file_path}\n")
+            
+    return html_content
+    
+
 def get_data_html_offline(file_path):
     """
-    Reads a local HTML file and extracts specific elements.
+    Reads a local HTML/XML file and extracts specific elements.
     Parameters:
     file_path (str): The path to the local HTML file. my_html="Top 5 Web Scraping Methods_ Including Using LLMs - Comet.mhtml"
     
-    Returns: html
+    Returns: html/xml
     
     XPath common usages:
     rst = html.xpath('//div[@class="image-caption"]/text()')  # Get the text content of the specified tag
@@ -2098,9 +3181,15 @@ def get_data_html_offline(file_path):
                     html_content = possible_html
         # Parse the HTML content
         html = etree.HTML(html_content)
-    else: #.html
+        return html
+    elif file_path.endswith(".html"): #.html
         html=etree.parse(file_path,etree.HTMLParser())
-    return html
+        return html
+    elif file_path.endswith(".xml"):
+        xml=etree.parse(file_path, etree.XMLParser())   
+        return xml
+    else:
+        print("Only supports mhtml, html, and xml file format!")
 
 def get_data_html_online(url, html=True, timeout=None, headers=None, cookies=None, params=None, proxies=None):
     '''
@@ -2139,8 +3228,8 @@ def find_table_with_most_rows(tables):
     max_rows=0
     max_table_index=-1
     for i, table in enumerate(tables):
-        if isinstance(table, pd.DataFrame) and table.shape[0] > max_rows:
-            max_rows=table.shape[0]
+        if isinstance(table, pd.DataFrame) and len(str(table.shape[0])) > max_rows:
+            max_rows=len(str(table.shape[0]))
             max_table_index=i
     return max_table_index, max_rows if max_table_index!= -1 else None
 
@@ -2173,7 +3262,7 @@ def get_data_table_html_string(html_string, output_file, most_rows=True):
             df=tables[0]  
         else:
             # 2. get the table with most rows
-            target_table=find_table_with_most_rows(tables)[0] #  (1, 32)
+            target_table=find_table_with_most_rows(tables)[1] #  (1, 32)
             df=tables[target_table]        
         
         df.to_excel(output_file, index=False)
@@ -2330,4 +3419,865 @@ def delete_permanent_environment_variable(variable_name, system_wide=False):
         print(f'Failed to delete environment variable: {e}')
     except Exception as e:
         print(f'An error occurred: {e}')
+
+
+def calculate_mean_dependency_distance(spacy_doc):
+    """
+    Calculate the mean dependency distance for tokens in a spaCy Doc object.
+
+    The dependency distance is the absolute difference in positions between a token
+    and its syntactic head. This function computes the average of these distances
+    for all tokens in the Doc object, excluding punctuation and the root token.
+
+    Parameters:
+    spacy_doc (spacy.tokens.Doc): The spaCy Doc object to analyze.
+
+    Returns:
+    float: The mean dependency distance. Returns 0 if there are no valid tokens to analyze.
+    """
+    
+    doc=spacy_doc
+    total_distance = 0
+    count = 0
+
+    for token in doc:
+        if token.dep_ not in ("punct", "ROOT"):
+            distance = abs(list(doc).index(token.head) - list(doc).index(token))
+            total_distance += distance
+            count += 1
+
+    if count == 0:
+        return 0
+
+    mean_distance = total_distance / count
+    return mean_distance
+
+def word_lemmatize(spacy_doc):
+    """
+    Lemmatize the words in a spaCy Doc object and return the lemmatized text.
+
+    This function processes each token in the Doc object, replacing it with its lemma
+    unless the lemma is '-PRON-', in which case the original text of the token is used.
+    The resulting lemmatized words are joined into a single string.
+
+    Parameters:
+    spacy_doc (spacy.tokens.Doc): The spaCy Doc object to lemmatize.
+
+    Returns:
+    str: The lemmatized text as a single string.
+    """
+    doc = spacy_doc
+    text = ' '.join([word.lemma_ if word.lemma_ != '-PRON-' else word.text for word in doc])
+    return text
+
+def word_NER(spacy_doc):
+    """
+    Extract Named Entities from a spaCy Doc object.
+
+    This function processes the Doc object to identify and extract named entities,
+    returning a list of tuples where each tuple contains the entity text and its label.
+
+    Parameters:
+    spacy_doc (spacy.tokens.Doc): The spaCy Doc object to analyze.
+
+    Returns:
+    list of tuples: A list of tuples where each tuple contains the entity text and its label.
+    """
+    doc = spacy_doc
+    entities = [(ent.text, ent.label_) for ent in doc.ents]
+    return entities
+
+def word_POS(spacy_doc):
+    """
+    Extract Part-Of-Speech (POS) tags from a spaCy Doc object.
+
+    This function processes the Doc object to identify and extract the POS tags for each token,
+    returning a list of tuples where each tuple contains the token text and its corresponding POS tag.
+
+    Parameters:
+    spacy_doc (spacy.tokens.Doc): The spaCy Doc object to analyze.
+
+    Returns:
+    list of tuples: A list of tuples where each tuple contains the token text and its POS tag.
+    """
+    doc = spacy_doc
+    pos_tags = [(token.text, token.pos_) for token in doc]
+    return pos_tags
+
+def extract_noun_phrases(spacy_doc):
+    """
+    Extract noun phrases from a spaCy Doc object.
+
+    This function processes the Doc object to identify and extract noun phrases,
+    returning a list of strings where each string is a noun phrase.
+
+    Parameters:
+    spacy_doc (spacy.tokens.Doc): The spaCy Doc object to analyze.
+
+    Returns:
+    list of str: A list of noun phrases extracted from the Doc object.
+    """
+    doc = spacy_doc
+    noun_phrases = [chunk.text for chunk in doc.noun_chunks]
+    return noun_phrases
+
+def extract_dependency_relations(spacy_doc):
+    """
+    Extract the dependency relations for each word in a spaCy Doc object.
+
+    This function processes the Doc object to identify and extract the dependency relations
+    for each token, returning a list of tuples where each tuple contains the token text,
+    its dependency relation, and the text of its syntactic head.
+
+    Parameters:
+    spacy_doc (spacy.tokens.Doc): The spaCy Doc object to analyze.
+
+    Returns:
+    list of tuples: A list of tuples where each tuple contains the token text,
+                    its dependency relation, and the text of its syntactic head.
+    """
+    doc = spacy_doc
+    dependency_relations = [(token.text, token.dep_, token.head.text) for token in doc]
+    return dependency_relations
+
+def extract_dependency_relations_full(spacy_doc):
+    """
+    Extract comprehensive dependency relations for each word in a spaCy Doc object.
+
+    This function processes the Doc object to identify and extract detailed dependency relations
+    for each token. It returns a list of tuples where each tuple contains the token text,
+    its lemmatized form, its part-of-speech (POS) tag, its dependency relation, the text of its
+    syntactic head, and a list of its child tokens.
+
+    Parameters:
+    spacy_doc (spacy.tokens.Doc): The spaCy Doc object to analyze.
+
+    Returns:
+    list of tuples: A list of tuples where each tuple contains:
+                    - The token text
+                    - The lemmatized form of the token
+                    - The POS tag of the token
+                    - The dependency relation of the token
+                    - The text of the token's syntactic head
+                    - A list of the text of the token's child tokens
+    """
+    doc = spacy_doc
+    dependency_relations = [(token.text, token.lemma_, token.pos_, token.dep_, token.head.text, [child.text for child in token.children]) for token in doc]
+    return dependency_relations
+
+usua_tag_set = {
+    "A": "General & Abstract Terms",
+    "B": "The Body & the Individual",
+    "C": "Arts & Crafts",
+    "E": "Emotional Actions, States & Processes",
+    "F": "Food & Farming",
+    "G": "Government & the Public Domain",
+    "H": "Architecture, Building, Houses & the Home",
+    "I": "Money & Commerce",
+    "K": "Entertainment, Sports & Games",
+    "L": "Life & Living Things",
+    "M": "Movement, Location, Travel & Transport",
+    "N": "Numbers & Measurement",
+    "O": "Substances, Materials, Objects & Equipment",
+    "P": "Education",
+    "Q": "Linguistic Actions, States & Processes",
+    "S": "Social Actions, States & Processes",
+    "T": "Time",
+    "W": "The World & Our Environment",
+    "X": "Psychological Actions, States & Processes",
+    "Y": "Science & Technology",
+    "Z": "Names & Grammatical Words"
+}
+
+
+def get_CET_dics(name=None):
+    '''
+    Parameters
+    ----------
+    name : TYPE, string: like 'CET-4', 'CET-6', etc.
+        DESCRIPTION. The default is None.
+
+    Returns
+    -------
+    TYPE, list: like ['a', 'an', 'abandon', 'able', 'ability', 'aboard', 'abolish', 'abolition', 'about', 'above', 'abroad', 'absent', 'absence', 'absolute', 'absorb']
+        DESCRIPTION. The default will return a list of English CET (China's College English Test band 4 & 6) words.
+    '''
+    
+    dic_path=get_library_location("PgsFile")+"/PgsFile/models/dics"
+    if name is None:
+        cet_words=get_data_lines(find_txt_files_with_keyword(dic_path, "cet-4")[0])
+        return cet_words
+    else:
+        cet_words=get_data_lines(find_txt_files_with_keyword(dic_path, name)[0])
+        return cet_words   
+
+def get_BNC_dic():
+    '''
+    Returns
+    -------
+    TYPE, pandas dataframe: 
+              List   ... Total frequency
+        0        1k  ...         2525253
+        1        1k  ...           47760
+        2        1k  ...          192168
+        3        1k  ...           25370
+        4        1k  ...            9284
+            ...  ...             ...
+        24997   25k  ...               0
+        24998   25k  ...               0
+        24999   25k  ...               9
+        25000   25k  ...               4
+        25001   25k  ...               9
+        
+        [25002 rows x 4 columns]        
+        DESCRIPTION. The default will return a dataframe of the most commonly used English word list based on the BNC-COCA corpus.
+    '''
+    import pandas as pd
+    inter=get_library_location("PgsFile")+"/PgsFile/models/dics"
+    dic_path=get_full_path(inter, "BNC_COCA_lists.xlsx")
+    print(dic_path)
+    df=pd.read_excel(dic_path)
+    return df
+    
+def get_LLMs_prompt(task=None):
+    '''
+    Parameters
+    ----------
+    task : TYPE, string: like 'MIP', 'WSD', etc.
+        DESCRIPTION. The default is None.
+
+    Returns
+    -------
+    TYPE, string: like LLM Prompt for Metaphor Analysis Task:
+        Identify all metaphorical expressions in the provided text using MIP (Metaphor Identification Procedure).
+        Categorize each metaphor into one of the following CDA sub-types (with brief justification).
+        DESCRIPTION. The default will return a text promt for specific LLM task.
+    '''
+    
+    dic_path=get_library_location("PgsFile")+"/PgsFile/models/prompts"
+    if task is None:
+        user_prompt=get_data_text(find_txt_files_with_keyword(dic_path, "mip")[0])
+        return user_prompt
+    else:
+        user_prompt=get_data_text(find_txt_files_with_keyword(dic_path, task)[0])
+        return user_prompt   
+    
+def predict_category(model, new_title, description=""):
+    """
+    Predict the news category for a new title (and optional description).
+    # Load the trained model
+    model_path = "PGS_news_classifier.bin"
+    
+    Args:
+        model = fasttext.load_model(model_path)
+        new_title (str): New news headline to classify
+        description (str): Optional short description to include with the title
+    Returns:
+        tuple: (predicted_label, confidence_score)
+    """
+    text = f"{new_title} {description}".strip()
+    labels, scores = model.predict(text, k=1)  # k=1 returns only the top prediction
+    predicted_label = labels[0].replace('__label__', '')
+    confidence_score = scores[0]
+    return predicted_label, confidence_score   
+
+import platform
+import sys
+
+def get_system_info():
+    """
+    Determine the computer's system architecture and operating system type.
+
+    Returns:
+        dict: A dictionary containing:
+            - 'os_type': The general OS type (e.g., 'Windows', 'Linux', 'macOS').
+            - 'os_name': The detailed OS name (e.g., 'Windows 10', 'Ubuntu').
+            - 'os_version': The OS version (e.g., '10.0.19041').
+            - 'architecture': The system architecture (e.g., '64bit', '32bit').
+            - 'processor': The processor type (e.g., 'x86_64', 'ARM64').
+    """
+    system_info = {
+        'os_type': None,
+        'os_name': None,
+        'os_version': None,
+        'architecture': None,
+        'processor': None
+    }
+
+    # Get OS type (Windows/Linux/macOS)
+    os_type = platform.system()
+    system_info['os_type'] = os_type
+
+    # Get detailed OS name and version
+    if os_type == "Windows":
+        system_info['os_name'] = platform.win32_ver()[0]
+        system_info['os_version'] = platform.win32_ver()[1]
+    elif os_type == "Linux":
+        system_info['os_name'] = ' '.join(platform.linux_distribution()[:2])
+        system_info['os_version'] = platform.release()
+    elif os_type == "Darwin":
+        system_info['os_name'] = 'macOS'
+        system_info['os_version'] = platform.mac_ver()[0]
+
+    # Get architecture (32bit/64bit)
+    is_64bit = sys.maxsize > 2**32
+    system_info['architecture'] = '64bit' if is_64bit else '32bit'
+
+    # Get processor information
+    system_info['processor'] = platform.machine()
+
+    return system_info
+
+
+import time
+from functools import wraps
+
+def timeit(func):
+    """Decorator to measure execution time of a function or script."""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+
+        if elapsed_time > 60:
+            # Convert elapsed time to days, hours, minutes, and seconds
+            days = int(elapsed_time // (24 * 3600))
+            hours = int((elapsed_time % (24 * 3600)) // 3600)
+            minutes = int((elapsed_time % 3600) // 60)
+            seconds = elapsed_time % 60
+
+            # Format the time string according to the rules
+            parts = []
+            if days > 0:
+                parts.append(f"{days} days")
+            if days > 0 or hours > 0:
+                parts.append(f"{hours:02}:{minutes:02}:{seconds:06.4f}")
+            elif minutes > 0:
+                parts.append(f"{minutes:02}:{seconds:06.4f}")
+            else:
+                parts.append(f"{seconds:06.4f} seconds")
+
+            time_str = ", ".join(parts)
+        else:
+            time_str = f"{elapsed_time:.4f} seconds"
+
+        print(f"'{func.__name__}' executed in {time_str}")
+        return result
+    return wrapper
+
+def file_to_list_of_dicts(input_path, output_path):
+    """
+    Convert a CSV or XLSX file into a JSON file, where each line in the JSON file is a dictionary representing a row from the input file.
+    The keys of each dictionary are formatted as "column1, column2, column3, etc."
+
+    Args:
+        input_path (str): Path to the CSV or XLSX file.
+        output_path (str): Path to the output JSON file.
+
+    Returns:
+        None: The function writes the dictionaries to a JSON file specified by output_path.
+    """
+    # Determine the file type based on the file extension
+    import pandas as pd
+    if input_path.endswith('.csv'):
+        df = pd.read_csv(input_path)
+    elif input_path.endswith('.xlsx'):
+        df = pd.read_excel(input_path)
+    else:
+        raise ValueError("Unsupported file format. Please provide a CSV or XLSX file.")
+
+    # Use default keys "col1, col2, etc."
+    total = len(list(df.iterrows()))
+    for index, row in df.iterrows():
+        row_dict = {f"col{i+1}": value for i, value in enumerate(row)}
+        append_dict_to_json(output_path, row_dict)
+        print(f'Converting {decimal_to_percent(index/total)}')
+
+    print("Conversion complete!")
+    
+
+import liwc
+import json
+def perform_liwc_en(dic_path, file_path, output_excel_path):
+    '''
+    Parameters
+    ----------
+    dic_path : str
+        Path to the LIWC dictionary file.
+    file_path : str
+        Path to the raw text file.
+    output_excel_path : str
+        Path to the output Excel file.
+    '''
+    parse, category_names = liwc.load_token_parser(dic_path)
+    test = get_data_text(file_path)
+    test_tokens = [w.lower() for w in word_tokenize2(test)]
+    my_word_list = dict(word_list(test_tokens))
+    corpus_scale = sum(my_word_list.values())
+
+    labels = {'function': '1', 'pronoun': '2', 'ppron': '3', 'i': '4', 'we': '5', 'you': '6', 'shehe': '7', 'they': '8', 'ipron': '9', 'article': '10', 'prep': '11', 'auxverb': '12', 'adverb': '13', 'conj': '14', 'negate': '15', 'verb': '20', 'adj': '21', 'compare': '22', 'interrog': '23', 'number': '24', 'quant': '25', 'affect': '30', 'posemo': '31', 'negemo': '32', 'anx': '33', 'anger': '34', 'sad': '35', 'social': '40', 'family': '41', 'friend': '42', 'female': '43', 'male': '44', 'cogproc': '50', 'insight': '51', 'cause': '52', 'discrep': '53', 'tentat': '54', 'certain': '55', 'differ': '56', 'percept': '60', 'see': '61', 'hear': '62', 'feel': '63', 'bio': '70', 'body': '71', 'health': '72', 'sexual': '73', 'ingest': '74', 'drives': '80', 'affiliation': '81', 'achiev': '82', 'power': '83', 'reward': '84', 'risk': '85', 'focuspast': '90', 'focuspresent': '91', 'focusfuture': '92', 'relativ': '100', 'motion': '101', 'space': '102', 'time': '103', 'work': '110', 'leisure': '111', 'home': '112', 'money': '113', 'relig': '114', 'death': '115', 'informal': '120', 'swear': '121', 'netspeak': '122', 'assent': '123', 'nonflu': '124', 'filler': '125', 'punctuation':'126'}
+
+    # 第一列：类别标签
+    # 第二列：某类别出现的词种数
+    # 第三列：某类别出现的词次数
+    # 第四列：考察文本语料库的总词次数
+    # 第五列：覆盖率
+    # 第六列：例词，包含某个词的频次降序排列
+    
+    def get_category_info(x):
+        category_words = []
+        category_words_freq = 0
+        for w in my_word_list:
+            categories = parse(w)
+            if x in categories:
+                category_words.append([w, my_word_list[w]])
+                category_words_freq += my_word_list[w]
+
+        final = sorted(category_words, key=lambda x: x[1], reverse=True)
+        json_string = json.dumps(final)
+        return [len(category_words), category_words_freq, corpus_scale, decimal_to_percent(category_words_freq / corpus_scale), json_string]
+
+    data = []
+    labels_list = list(labels.keys())
+    for i in labels_list:
+        rs = get_category_info(i)
+        data.append([i] + rs)
+
+    import pandas as pd
+    df = pd.DataFrame(data, columns=[u'类别', u'出现词种数', u'出现词次', u'总词次', u'覆盖率', u'例词'])
+    df.to_excel(output_excel_path, 'sheet1', index=False)
+
+
+def perform_liwc_zh(dic_path, file_path, output_excel_path):
+    '''
+    Parameters
+    ----------
+    dic_path : str
+        Path to the LIWC dictionary json file.
+    file_path : str
+        Path to the raw text file.
+    output_excel_path : str
+        Path to the output Excel file.
+    '''        
+    
+    f=open(dic_path,"r")
+    dicx=json.load(f)    
+    
+    test = get_data_text(file_path)
+    test_tokens = word_tokenize(test)
+    my_word_list=dict(word_list(test_tokens))
+    corpus_scale=sum(my_word_list.values())
+    
+    labels=['Entry:词条','function:功能词','pronoun:代名词','ppron:特定人称代名词','i:第一人称单数代名词','we:第一人称复数代名词','you:第二人称代名词','shehe:第三人称单数代名词','they:第三人称复数代名词','youpl:第二人称复数代名词','ipron:非特定人称代名词','prep:介系词','auxverb:助动词','adverb:副词','conj:连接词','negate:否定词','quanunit:量词','prepend:后置词','specart:特指定词','particle:小品词','modal_pa:语气词','general_pa','compare:比较词','interrog:疑问词','number:数字','quant:概数词','affect:情感历程词','posemo:正向情绪词','negemo:负向情绪词','anx:焦虑词','anger:生气词','sad:悲伤词','social:社会历程词','family:家族词','friend:朋友词','female:女性词','male:男性词','cogproc','insight:洞察词','cause:因果词','discrep:差距词','tentat:暂定词','certain:确切词','differ','percept:感知历程词','see:视觉词','hear:听觉词','feel:感觉词','bio:生理历程词','body:身体词','health:健康词','sexual:性词','ingest:摄食词','drives','affiliation','achieve:成就词','power','reward','risk','tensem:时态标定词','focuspast:过去时态标定词','focuspresent:现在时态标定词','focusfuture:未来时态标定词','progm:延续时态标定词','relativ:相对词','motion:移动词','space:空间词','time:时间词','work:工作词','leisure:休闲词','home:家庭词','money:金钱词','relig:宗教词','death:死亡词','informal','swear:脏话','netspeak:网络用语','assent:应和词','nonflu:停顿赘词','filler:填充赘词','punctuation:标点符号']
+    # target_index=labels.index("swear") #75
+    
+    def get_category_info(x):
+        category_words=[]
+        category_words_indicx=[]
+        category_words_freq=0
+        for w in dicx:
+            if dicx[w][x]=="1":
+                category_words_indicx.append(w)
+                if w in my_word_list:
+                    category_words_freq+=my_word_list[w]
+                    category_words.append([w,my_word_list[w]])
+        final=sorted(category_words,key=lambda x: x[1],reverse=True)
+        json_string = json.dumps(final, ensure_ascii=False)
+        return [len(category_words),decimal_to_percent(len(category_words)/len(category_words_indicx)),category_words_freq,corpus_scale, decimal_to_percent(category_words_freq/corpus_scale), json_string]
+    
+    data=[]
+    for i in labels[1::]:
+        rs=get_category_info(labels[1::].index(i)) 
+        data.append([i]+rs)
+    
+    
+    import pandas as pd
+    df = pd.DataFrame(data,columns=[u'类别', u'出现词种数', u'占词表百分比', u'出现词次', u'总词次', u'覆盖率', u'例词'])
+    df.to_excel(output_excel_path,'sheet1',index=False)
+    
+    
+import math
+from collections import defaultdict
+def calculate_log_likelihood(target_count, reference_count, total_target, total_reference):
+    """Calculate the log-likelihood of a word being a keyword using absolute frequencies."""
+    # Calculate expected frequencies
+    total_combined = total_target + total_reference
+    expected_target = (target_count + reference_count) * (total_target / total_combined)
+    expected_reference = (target_count + reference_count) * (total_reference / total_combined)
+
+    # Calculate log-likelihood
+    ll = 0.0
+    if target_count > 0:
+        ll += target_count * math.log(target_count / expected_target)
+    if reference_count > 0:
+        ll += reference_count * math.log(reference_count / expected_reference)
+
+    return ll * 2  # Return G^2 statistic
+
+def extract_keywords_en(target_text, top_n=10):
+    """Extract keywords from target text using log-likelihood with absolute reference frequencies."""
+    # Example usage
+    my_dic_path = get_library_location("PgsFile")+"/PgsFile/models/dics/unigram_freq_only.json" # BNC_wordlist
+    reference_freq = get_data_json(my_dic_path)
+    # Tokenize target text and preserve original case
+    original_words = word_tokenize2(target_text)
+    lower_words = [w.lower() for w in original_words if w.lower() not in BigPunctuation and w.lower() not in get_stopwords()]
+    total_target = len(lower_words)
+
+    # Calculate target word frequencies
+    target_word_freq = defaultdict(int)
+    word_case_mapping = {}
+    for orig_word, lower_word in zip(original_words, [w.lower() for w in original_words]):
+        if lower_word in lower_words:
+            target_word_freq[lower_word] += 1
+            if lower_word not in word_case_mapping:
+                word_case_mapping[lower_word] = orig_word
+
+    # Calculate total reference frequency
+    total_reference = sum(reference_freq.values())
+
+    # Calculate log-likelihood for each word
+    keyword_scores = []
+    for word, target_count in target_word_freq.items():
+        reference_count = reference_freq.get(word, 0)
+        ll = calculate_log_likelihood(target_count, reference_count, total_target, total_reference)
+        relative_freq = target_count / total_target
+        original_word = word_case_mapping.get(word, word)
+        keyword_scores.append((original_word, target_count, relative_freq, ll))
+
+    # Sort keywords by log-likelihood score
+    keyword_scores.sort(key=lambda x: x[3], reverse=True)
+
+    # Return top N keywords
+    return keyword_scores[:top_n]
+
+def extract_keywords_en_be21(target_text, top_n=10):
+    """Extract keywords from target text using log-likelihood with absolute reference frequencies."""
+    # Example usage
+    my_dic_path = get_library_location("PgsFile")+"/PgsFile/models/dics/BE21.json" # BE21_wordlist
+    reference_freq = get_data_json(my_dic_path)
+    # Tokenize target text and preserve original case
+    original_words = word_tokenize2(target_text)
+    lower_words = [w.lower() for w in original_words if w.lower() not in BigPunctuation and w.lower() not in get_stopwords()]
+    total_target = len(lower_words)
+
+    # Calculate target word frequencies
+    target_word_freq = defaultdict(int)
+    word_case_mapping = {}
+    for orig_word, lower_word in zip(original_words, [w.lower() for w in original_words]):
+        if lower_word in lower_words:
+            target_word_freq[lower_word] += 1
+            if lower_word not in word_case_mapping:
+                word_case_mapping[lower_word] = orig_word
+
+    # Calculate total reference frequency
+    total_reference = sum(reference_freq.values())
+
+    # Calculate log-likelihood for each word
+    keyword_scores = []
+    for word, target_count in target_word_freq.items():
+        reference_count = reference_freq.get(word, 0)
+        ll = calculate_log_likelihood(target_count, reference_count, total_target, total_reference)
+        relative_freq = target_count / total_target
+        original_word = word_case_mapping.get(word, word)
+        keyword_scores.append((original_word, target_count, relative_freq, ll))
+
+    # Sort keywords by log-likelihood score
+    keyword_scores.sort(key=lambda x: x[3], reverse=True)
+
+    # Return top N keywords
+    return keyword_scores[:top_n]
+
+def resize_image(input_image_path, output_image_path, max_size_kb):
+    '''
+    # Example 1: Resizing a JPG image
+    input_image_path_jpg = 'example_input.jpg'
+    output_image_path_jpg = 'example_output_resized.jpg'
+    resize_image(input_image_path_jpg, output_image_path_jpg, max_size_kb=2048)
+
+    # Example 2: Resizing a PNG image
+    input_image_path_png = 'example_input.png'
+    output_image_path_png = 'example_output_resized.png'
+    resize_image(input_image_path_png, output_image_path_png, max_size_kb=2048)
+    '''
+    # Open the image file
+    with Image.open(input_image_path) as img:
+        # Function to save the image and check its size
+        def save_image(img, output_path, quality=95):
+            if output_path.lower().endswith('.jpg'):
+                img.save(output_path, 'JPEG', quality=quality)
+            else:
+                img.save(output_path, 'PNG', optimize=True)
+
+        # Initial save to check the size
+        save_image(img, output_image_path)
+
+        # Check the size and reduce quality/dimensions if necessary
+        size = os.path.getsize(output_image_path) // 1024  # Size in KB
+
+        # Reduce quality for JPG or optimize PNG
+        quality = 95
+        while size > max_size_kb:
+            # Reduce dimensions
+            width, height = img.size
+            img = img.resize((int(width * 0.9), int(height * 0.9)), Image.LANCZOS)
+
+            # Save the image
+            save_image(img, output_image_path, quality)
+            size = os.path.getsize(output_image_path) // 1024
+
+            # Reduce quality for JPG
+            if output_image_path.lower().endswith('.jpg'):
+                quality -= 5
+                if quality < 10:  # Prevent quality from going too low
+                    break
+
+        if size <= max_size_kb:
+            print(f"Image resized successfully to {size} KB.")
+        else:
+            print("Could not reduce the image size below 2MB.")
+
+import base64
+def convert_image_to_url(image_path: str) -> str:
+    """
+    Convert an image file to a base64 encoded URL format.
+
+    :param image_path: Path to the image file.
+    :return: A string representing the image in the required URL format.
+    """
+    # Check if the file exists
+    if not os.path.isfile(image_path):
+        raise FileNotFoundError(f"The file {image_path} does not exist.")
+
+    # Open and read the image file in binary mode
+    with open(image_path, "rb") as f:
+        image_data = f.read()
+
+    # Extract the file extension and convert it to base64
+    file_extension = os.path.splitext(image_path)[1][1:]
+    base64_image_data = base64.b64encode(image_data).decode('utf-8')
+
+    # Create the image URL
+    image_url = f"data:image/{file_extension};base64,{base64_image_data}"
+
+    return image_url
+
+import ast
+def markdown_to_python_object(data):
+    """
+    If `data` is already a Python object (list, dict, tuple, str, etc.), return it.
+    If it's a Markdown code block, try to parse it into the equivalent Python object.
+    """
+    # If already a Python object (but not a string), return as is
+    if not isinstance(data, str):
+        return data
+
+    # Match Markdown code block (with or without `python`)
+    code_block = re.search(r"```(?:python)?\s*(.*?)\s*```", data, re.DOTALL)
+    if not code_block:
+        # If there's no triple backticks, try parsing the string directly
+        try:
+            return ast.literal_eval(data)
+        except Exception:
+            return data.strip()
+    
+    code_str = code_block.group(1)
+
+    # Try safe parsing
+    try:
+        return ast.literal_eval(code_str)
+    except Exception:
+        return code_str.strip()
+
+
+import math
+from collections import defaultdict, Counter
+
+def tfidf_keyword_extraction(documents, top_percent=(0.0, 0.10)):
+    """
+    Extract keywords from a small set of tokenized documents using TF-IDF.
+
+    Parameters
+    ----------
+    documents : list of list of str
+        Corpus represented as tokenized documents.
+    top_percent : tuple of float
+        Range of percentage (low, high) to select top keyword candidates.
+
+    Returns
+    -------
+    full_list : list of tuple
+        All (term, tf-idf_score) sorted by score in descending order.
+    candidates : list of tuple
+        Keyword candidates from top_10% range.
+    """
+    log = math.log  # local reference for speed
+
+    # Step 1: Compute IDF
+    total_docs = len(documents)
+    doc_freq = defaultdict(int)
+    for doc in documents:
+        for term in set(doc):
+            doc_freq[term] += 1
+    idf = {term: log((total_docs + 1) / (df + 1)) + 1 for term, df in doc_freq.items()}
+
+    # Step 2: Compute TF-IDF
+    tfidf_scores = {}
+    for doc in documents:
+        total_terms = len(doc)
+        term_counts = Counter(doc)
+        for term, count in term_counts.items():
+            tfidf_scores[term] = (count / total_terms) * idf[term]  # overwrite as before
+
+    # Step 3: Sort full list
+    full_list = sorted(tfidf_scores.items(), key=lambda x: x[1], reverse=True)
+
+    # Step 4: Extract candidates based on percentage range
+    n_terms = len(full_list)
+    low_cut = int(n_terms * top_percent[0])
+    high_cut = int(n_terms * top_percent[1])
+    candidates = full_list[low_cut:high_cut]  # slice range
+
+    return full_list, candidates
+
+
+from xml.dom.minidom import Document
+from datetime import datetime
+def maketmx(
+    tmx_path,
+    source_list,
+    target_list,
+    source_lang="zh-CN",
+    target_lang="en-US",
+    author="Petercusin",
+    client_name=None,
+    project_id=None,
+    domain=None,
+    status="Final"
+):
+    """
+    Generate a TMX (Translation Memory eXchange) file for any two language pairs, with optional metadata.
+
+    Parameters
+    ----------
+    tmx_path : str
+        Path to save the TMX file, e.g., "translation_memory.tmx".
+    source_list : list of str
+        List of source language segments, e.g., ["你好", "再见"].
+    target_list : list of str
+        List of target language segments, e.g., ["Hello", "Goodbye"].
+        **Must have the same number of elements as `source_list`.**
+    source_lang : str, optional
+        Source language code, e.g., "zh-CN" (default), "fr-FR", "de-DE".
+    target_lang : str, optional
+        Target language code, e.g., "en-US" (default), "es-ES", "ja-JP".
+    author : str, optional
+        Author of the TMX file, e.g., "Petercusin" (default).
+    client_name : str, optional
+        Name of the client or company, e.g., "Acme Corp".
+    project_id : str, optional
+        Project identifier, e.g., "Project_XYZ_2025".
+    domain : str, optional
+        Domain or subject field, e.g., "Medical", "Legal", "Technical".
+    status : str, optional
+        Translation status, e.g., "Draft", "Reviewed", "Final" (default).
+
+    Returns
+    -------
+    None
+        Writes the TMX file to the specified path.
+
+    Raises
+    ------
+    ValueError
+        If `source_list` and `target_list` have different lengths.
+
+    Example
+    -------
+    # Chinese to English, with metadata
+    maketmx(
+        "zh_en.tmx",
+        ["你好", "再见"],
+        ["Hello", "Goodbye"],
+        "zh-CN",
+        "en-US",
+        author="Dr. Guisheng PAN",
+        client_name="Acme Corp",
+        project_id="Project_XYZ_2025",
+        domain="Technical",
+        status="Final"
+    )
+    """
+    if len(source_list) != len(target_list):
+        raise ValueError("source_list and target_list must have the same number of elements.")
+
+    doc = Document()
+    tmx = doc.createElement("tmx")
+    tmx.setAttribute("version", "1.4")
+    doc.appendChild(tmx)
+
+    header = doc.createElement("header")
+    header.setAttribute("creationtool", "PgsFile")
+    header.setAttribute("creationtoolversion", "0.5.1")
+    header.setAttribute("creationtooldeveloper", author)
+    header.setAttribute("creationdate", datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))
+    header.setAttribute("srclang", source_lang)
+    header.setAttribute("trtlang", target_lang)
+    header.setAttribute("datatype", "plaintext")
+    header.setAttribute("segtype", "sentence")
+    header.setAttribute("adminlang", "en-US")
+    header.setAttribute("o-tmf", "PgsFile_TM")
+    tmx.appendChild(header)
+
+    # Add optional metadata as <prop> elements
+    if client_name:
+        prop = doc.createElement("prop")
+        prop.setAttribute("type", "x-Client")
+        prop.appendChild(doc.createTextNode(client_name))
+        header.appendChild(prop)
+    if project_id:
+        prop = doc.createElement("prop")
+        prop.setAttribute("type", "x-Project")
+        prop.appendChild(doc.createTextNode(project_id))
+        header.appendChild(prop)
+    if domain:
+        prop = doc.createElement("prop")
+        prop.setAttribute("type", "x-Domain")
+        prop.appendChild(doc.createTextNode(domain))
+        header.appendChild(prop)
+    if status:
+        prop = doc.createElement("prop")
+        prop.setAttribute("type", "x-Status")
+        prop.appendChild(doc.createTextNode(status))
+        header.appendChild(prop)
+
+    body = doc.createElement("body")
+    tmx.appendChild(body)
+
+    for i in range(len(source_list)):
+        tu = doc.createElement("tu")
+        body.appendChild(tu)
+
+        # Source language segment
+        tuv = doc.createElement("tuv")
+        tuv.setAttribute("xml:lang", source_lang)
+        tu.appendChild(tuv)
+        seg = doc.createElement("seg")
+        seg_text = doc.createTextNode(source_list[i])
+        seg.appendChild(seg_text)
+        tuv.appendChild(seg)
+
+        # Target language segment
+        tuv = doc.createElement("tuv")
+        tuv.setAttribute("xml:lang", target_lang)
+        tu.appendChild(tuv)
+        seg = doc.createElement("seg")
+        seg_text = doc.createTextNode(target_list[i])
+        seg.appendChild(seg_text)
+        tuv.appendChild(seg)
+
+    with open(tmx_path, 'w', encoding='utf-8') as f:
+        doc.writexml(f, indent='\t', newl='\n', addindent='\t')
 
