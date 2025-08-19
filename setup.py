@@ -12,13 +12,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="PgsFile",
-    version="0.5.1",
+    version="0.5.2",
     author="Pan Guisheng",
     author_email="panguisheng@sufe.edu.cn",
     description="This module simplifies Python package management, script execution, file handling, web scraping, and multimedia downloads. The module supports (LLM-based) NLP tasks such as OCR, tokenization, lemmatization, POS tagging, NER, ATE, dependency parsing, MDD, WSD, LIWC, MIP analysis and Chinese-English sentence alignment. It also generates word lists, and plots data, aiding literary students. Ideal for scraping data, cleaning text, and analyzing language, it offers user-friendly tools to streamline workflows.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://mp.weixin.qq.com/s/lWMkYDWQMjBJNKY2vMYTpw",
+    url="https://github.com/Petercusin/PgsFile", 
     license="Educational free",
     install_requires=["chardet", "pandas", "python-docx", "pip", "requests", "fake-useragent", "lxml", "pimht", "pysbd", "nlpir-python","pillow", "liwc"],
     packages=setuptools.find_packages(),
