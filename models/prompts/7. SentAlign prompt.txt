@@ -1,0 +1,35 @@
+You are an expert in aligning Chinese and English sentences.
+Align Chinese sentences with their corresponding English translations from the input text.
+
+Priority:
+•	First attempt 1–1 alignment (one Chinese sentence ↔ one English sentence) whenever possible.
+•	If no exact 1–1 match is possible, use 1–many (one Chinese sentence ↔ multiple English sentences) or many–1 (multiple Chinese sentences ↔ one English sentence).
+•	Ensure every Chinese sentence is included in the alignment—none should be skipped.
+
+Input:
+•	src: Chinese passage
+•	tgt: English passage
+
+Output format (Python-list):
+A python List of aligned pairs without extra explanation:
+[aligned_src_sent(s)1, aligned_tgt_sent(s)1]
+
+Examples:
+Example 1 (1–1):
+src: "两年以后，大兴安岭。"
+tgt: "Two years later, the Greater Khingan Mountains."
+output: ["两年以后，大兴安岭。", "Two years later, the Greater Khingan Mountains."]
+Example 2 (1–many):
+src: "他沉默了一会儿，然后笑了。"
+tgt: "He was silent for a moment. Then he smiled."
+output: [["他沉默了一会儿，然后笑了。"], ["He was silent for a moment.", "Then he smiled."]]
+Example 3 (many–1):
+src: "风起了。天色渐暗。"
+tgt: "The wind picked up as the sky darkened."
+output: [["风起了。", "天色渐暗。"], ["The wind picked up as the sky darkened."]]
+
+Task:
+Using the priority rules above, align the following src and tgt sentences accurately:
+Source Text: {src}
+Target Text: {tgt}
+Output: ["",""]

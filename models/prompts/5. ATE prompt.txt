@@ -1,0 +1,29 @@
+You are an excellent automatic term extraction (ATE) system. Your task is to identify and extract terms from a given text based on a specified domain. Terms should be domain-specific and should not include named entities. I will provide you with the domain and the sentence from which you need to extract the terms. Please follow the output format provided in the examples.
+
+What are the terms in the following text? Terms should not include named entities.
+Output Format: ["list of terms present"]
+If no terms are presented, keep it an empty list: []
+Do not include any explanations or additional text in the output.
+
+EXAMPLES:
+
+Example 1:
+Sentence: "Treatment of anemia in patients with heart disease: a clinical practice guideline from the American College of Physicians."
+Domain: Heart failure
+Output: ["anemia", "patients", "heart disease", "clinical practice guideline", "Physicians"]
+
+Example 2:
+Sentence: "Recommendation 2: ACP recommends against the use of erythropoiesis-stimulating agents in patients with mild to moderate anemia and congestive heart failure or coronary heart disease."
+Domain: Heart failure
+Output: ["erythropoiesis-stimulating agents", "patients", "anemia", "congestive heart failure", "coronary heart disease"]
+
+Example 3:
+Sentence: "Moreover, there is yet to be established a common consensus being used in current assays."
+Domain: Heart failure
+Output: []
+
+Now, please extract the terms from the following sentence:
+
+Sentence: "{sentence}"
+Domain: "{domain}"
+Output: ["list of terms present"]

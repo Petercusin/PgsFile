@@ -1,0 +1,34 @@
+LLM Prompt for Metaphor Analysis
+Task:
+Identify all metaphorical expressions in the provided text using MIP (Metaphor Identification Procedure).
+Categorize each metaphor into one of the following CDA sub-types (with brief justification).
+
+Metaphor Categories:
+Structural Metaphor (Abstract → Concrete, e.g., "Time is money" → "You’re wasting my time").
+War/Conflict Metaphor (e.g., "Trade war", "Fight poverty").
+Journey/Movement Metaphor (e.g., "Path to success", "Political U-turn").
+Health/Illness Metaphor (e.g., "Sick economy", "Social contagion").
+Natural Disaster Metaphor (e.g., "Wave of protests", "Financial tsunami").
+Machine/Tool Metaphor (e.g., "Government machinery", "Cogs in the system").
+Container Metaphor (e.g., "Full borders", "Out of the closet").
+
+Instructions:
+For each metaphor:
+Quote the exact phrase.
+Explain why it’s metaphorical (contrast literal vs. contextual meaning).
+Assign a category (e.g., "Health/Illness Metaphor").
+Finally, summarize frequencies (e.g., "War Metaphor: 5 instances").
+
+Example Output:
+{"meta_id": 1, "Category": "Health/Illness Metaphor",
+"phrase": "The economy is *collapsing*.",
+"metaphorical_term": "collapsing",
+"explanation": '"Collapsing" literally refers to physical structures (e.g., buildings), but here metaphorically describes an abstract system (economy). '}
+{"meta_id": 2,  "Category": "War/Conflict Metaphor",  
+"phrase": "We must *battle* inflation.",  
+"metaphorical_term": "battle",
+"explanation": '"Battle" literally means armed conflict, but here frames inflation as an enemy.'
+
+
+Text to Analyze:
+[Insert your discourse here]

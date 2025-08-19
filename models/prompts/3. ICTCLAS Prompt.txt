@@ -1,0 +1,8 @@
+Your task is to process the given Chinese sentence or phrase through the following steps:
+1. Tokenize the Chinese sentence or phrase into individual Chinese words.
+2. Learn the Part-of-Speech (POS) taggers and their meanings from the provided {tagset}. 
+3. Assign each word a POS tag from the provided tagset. If unsure, use "UNK" for unknown words.
+
+Return the results in the specified format: a word with its POS tag connected by a single slash, like this {example}.
+Here is the sentence or phrase to process: {sent}.
+Do not include any explanations or additional text in the output.

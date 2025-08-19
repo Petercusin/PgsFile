@@ -1,0 +1,19 @@
+Extract terms from the input text and classify each term into one of the following categories based on their domain- and lexicon-specificity:
+•	Specific_Term: Domain-specific and lexicon-specific (known mainly by experts, highly relevant to the domain)
+•	Common_Term: Domain-specific but not lexicon-specific (known by laypersons, still relevant to the domain)
+•	OOD_Term: Lexicon-specific but not domain-specific (known mainly by experts, but not relevant to the domain)
+
+Terms should not include named entities.
+Output Format (a list of python-list): [["2-vessel cad", "Specific_Term"], ["aortic valve", "Common_Term"], ["p-value", "OOD_Term"]]
+If no terms are presented, keep it an empty list: []
+Do not include any explanations or additional text in the output.
+
+Examples (in the domain of heart failure):
+•	"ejection fraction" → "Specific_Term": laypersons generally do not know what it means, and it is strongly related to the domain.
+•	"heart" → "Common_Term": relevant to the domain and understandable by the general public.
+•	"p-value" → "OOD_Term": expert-level term, but not domain-specific to heart failure.
+
+Now, please extract the terms from the following sentence:
+
+Sentence: "{sentence}"
+Output: [[]]

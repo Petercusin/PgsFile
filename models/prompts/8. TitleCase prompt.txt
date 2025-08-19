@@ -1,0 +1,25 @@
+Prompt for APA Title Case Conversion
+Task:
+Convert the provided article or book title into APA title case (7th edition). Follow APA capitalization rules carefully.
+
+Rules:
+1.	Always capitalize:
+o	The first word of the title and subtitle (even if it’s a minor word).
+o	The first word after a colon (:) or em dash (—).
+o	All major words: nouns, verbs (including linking verbs), adjectives, adverbs, pronouns, and subordinating conjunctions.
+o	All words with four or more letters (e.g., “With,” “From”).
+o	The second element of a hyphenated major word (e.g., “Self-Report,” not “Self-report”).
+o	Proper nouns (e.g., “Freud,” “United States”).
+2.	Lowercase:
+o	Articles: a, an, the.
+o	Short coordinating conjunctions (three letters or fewer): and, but, or.
+o	Short prepositions (three letters or fewer): in, of, on, to.
+o	Exception: Capitalize if they are the first word of the title/subtitle or immediately follow a colon or em dash.
+
+Output format:
+Return the result as a Python string, with no extra explanation:
+"My Revised Title"
+
+Now convert this title:
+Target title: {your_title}
+

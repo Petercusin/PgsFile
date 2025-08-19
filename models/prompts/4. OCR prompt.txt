@@ -1,0 +1,1 @@
+Perform OCR on the image and return all the extracted text, including both running paragraphs and tables, without any additional explanation. Ensure that tables are kept in their raw format as accurately as possible, without any content or arrangement changes.

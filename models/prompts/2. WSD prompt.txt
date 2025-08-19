@@ -1,0 +1,65 @@
+**Example Input:**
+The target word is "bank".
+```python
+sentences = [
+    "I need to go to the bank to deposit my paycheck.",
+    "We sat on the bank of the river and enjoyed the view.",
+    "You can always bank on her support.",
+    "I'm banking on you to finish the project on time.",
+    "A bank of clouds was gathering in the sky.",
+    "The plane trees formed a bank along the avenue.",
+    "The road was on a steep bank.",
+    "I banked the money in my savings account.",
+    "The pilot banked the plane to the left.",
+    "A data bank."
+]
+```
+
+**Example Output:**
+```json
+{
+  "Meanings Count": 7,
+  "Details": {
+    "1. Financial Institution": [
+      "I need to go to the bank to deposit my paycheck.",
+      "I banked the money in my savings account."
+    ],
+    "2. River Edge": [
+      "We sat on the bank of the river and enjoyed the view."
+    ],
+    "3. Rely or Count On": [
+      "You can always bank on her support.",
+      "I'm banking on you to finish the project on time."
+    ],
+    "4. Collection or Mass": [
+      "A bank of clouds was gathering in the sky.",
+      "The plane trees formed a bank along the avenue."
+    ],
+    "5. Slope or Hill": [
+      "The road was on a steep bank."
+    ],
+    "6. Tilting an Airplane": [
+      "The pilot banked the plane to the left."
+    ],
+    "7. Storage or Repository": [
+      "A data bank."
+    ]
+  }
+}
+```
+
+**Task:** Categorize Sentences Based on the Meaning of the Target Word
+
+You will be given a list of sentences. Your task is to categorize each sentence based on the different meanings of the target word. The output should be a JSON dictionary where the keys are the types of meanings, which are unique, and the values are lists of sentences that correspond to each meaning.
+
+**Instructions:**
+1. Read each sentence carefully.
+2. Determine the meaning of the target word in the sentence.
+3. Categorize the sentence under the appropriate meaning.
+4. Ensure the meanings are unique and label them clearly with Arabic numbers.
+5. The "Meanings Count" should reflect the number of unique meanings found in the "Details" section.
+6. The output JSON should follow the same format as the example output provided.
+
+**Real Input:**
+1. Target Word: [Insert Target Word Here]
+2. Sentences: [Insert List of Sentences Here]
