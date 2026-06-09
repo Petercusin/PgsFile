@@ -11,16 +11,16 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="PgsFile",
-    version="0.5.2",
-    author="Pan Guisheng",
+    name="pgsfile",
+    version="0.7.5",
+    author="Dr. Guisheng Pan",
     author_email="panguisheng@sufe.edu.cn",
-    description="This module simplifies Python package management, script execution, file handling, web scraping, and multimedia downloads. The module supports (LLM-based) NLP tasks such as OCR, tokenization, lemmatization, POS tagging, NER, ATE, dependency parsing, MDD, WSD, LIWC, MIP analysis and Chinese-English sentence alignment. It also generates word lists, and plots data, aiding literary students. Ideal for scraping data, cleaning text, and analyzing language, it offers user-friendly tools to streamline workflows.",
+    description="PgsFile is an all-in-one Python toolkit for web scraping, file management, AI-powered text analysis, and data visualization, helping students and researchers collect, process, and analyze data with minimal code.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Petercusin/PgsFile", 
     license="Educational free",
-    install_requires=["chardet", "pandas", "python-docx", "pip", "requests", "fake-useragent", "lxml", "pimht", "pysbd", "nlpir-python","pillow", "liwc"],
+    install_requires=["pandas", "python-docx", "pip", "requests", "fake-useragent", "lxml", "pimht", "pysbd", "nlpir-python", "pillow", "liwc"],
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[
