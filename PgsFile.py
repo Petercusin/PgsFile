@@ -5,7 +5,7 @@ Created on Wed Apr 28 23:44:04 2021
 @author: Petercusin
 """
 
-import os, sys
+import os, sys, re
 def check_contain_chinese(check_str):
     for ch in check_str:
         if u'\u4e00' <=ch<= u'\u9fff':
@@ -62,84 +62,70 @@ def decimal_to_percent(decimal):
     percent_str="{:.2f}%".format(percent)
     return percent_str
 
-try:
-    import chardet
-except ImportError:
-    print("chardet library not found. Installing...")
-    install_package("chardet")
-    import chardet  # Re-import after installation
+
+def get_data_text(file_path):
+    # List of common encodings to try
+    # utf-8-sig handles UTF-8 with or without a BOM
+    encodings = ['utf-8-sig', 'gbk', 'utf-16', 'ansi']
     
-def get_data_text(path):
-    '''
-    Parameters
-    ----------
-    path : str
-        The path to the text file to read.
-        Supports common text encoding formats, like utf-8, unicode, ansi, gbk etc.
+    for enc in encodings:
+        try:
+            with open(file_path, 'r', encoding=enc) as f:
+                return f.read()
+        except (UnicodeDecodeError, LookupError):
+            continue
+            
+    return "Error: Could not decode file with standard encodings."
 
-    Returns
-    -------
-    text : str
-        The text content from the target file.
-        Returns None if the file cannot be read with any of the specified encodings.
-    '''
-    # Get the size of the file
-    file_size = os.path.getsize(path)
-
-    # Read the file to detect encoding
-    with open(path, 'rb') as f:
-        if file_size < 1024:
-            raw_data = f.read()  # Read the entire file if it's small
-        else:
-            raw_data = f.read(1024)  # Read the first 1024 bytes
-
-        result = chardet.detect(raw_data)
-        encoding = result['encoding']
-
-    # Read the entire file using the detected encoding
-    if encoding:
-        with open(path, 'r', encoding=encoding, errors="ignore") as f:
-            return f.read()
-    else:
-        return None
 
 def get_data_lines(path, no_line_breaks=False):
-    '''
-    Parameters
-    ----------
-    path : str
-        The path to the text file to read.
-        Supports common text encoding formats, like utf-8, unicode, ansi, gbk etc.
+    """
+    Reads a text file into lines by trying a list of common encodings.
+    Returns a list of strings or None if all attempts fail.
+    """
+    # Priority list of encodings to support Western and Chinese languages
+    # 'utf-8-sig' is first as it handles UTF-8 with or without a BOM
+    # 'gb18030' covers Simplified Chinese (GBK/GB2312)
+    # 'big5' covers Traditional Chinese
+    encodings_to_try = [
+        'utf-8-sig', 
+        'gb18030', 
+        'big5', 
+        'windows-1252', 
+        'latin1', 
+        'utf-16', 
+        'utf-8'
+    ]
 
-    Returns
-    -------
-    lines : list
-        A list containing all the non-empty paragraphs of the target file.
-    '''
-    
-    # Get the size of the file
-    file_size = os.path.getsize(path)
-
-    # Read the file to detect encoding
-    with open(path, 'rb') as f:
-        if file_size < 1024:
-            raw_data = f.read()  # Read the entire file if it's small
-        else:
-            raw_data = f.read(1024)  # Read the first 1024 bytes
-
-        result = chardet.detect(raw_data)
-        encoding = result['encoding']
-
-    # Read the entire file using the detected encoding
-    if encoding:
-        with open(path, 'r', encoding=encoding, errors="ignore") as f:
-            if no_line_breaks is False:
-                lines = [l.strip() for l in f.readlines() if len(l.strip()) != 0]
-            else:
+    for enc in encodings_to_try:
+        try:
+            with open(path, 'r', encoding=enc) as f:
                 lines = f.readlines()
-            return lines
-    else:
-        return None
+
+            # Heuristic check for "mojibake" (decoding errors that don't crash)
+            # If more than 5% of characters are the '' replacement char, try next encoding
+            total_chars = sum(len(line) for line in lines)
+            if total_chars > 0:
+                replacement_count = sum(line.count('\ufffd') for line in lines)
+                if (replacement_count / total_chars) > 0.05:
+                    continue
+
+            # Line Processing
+            if not no_line_breaks:
+                # Strip whitespace and skip empty lines
+                processed_lines = [l.strip() for l in lines if l.strip()]
+            else:
+                # Keep original line breaks and formatting
+                processed_lines = lines
+
+            return processed_lines
+
+        except (UnicodeDecodeError, LookupError, PermissionError):
+            # If this encoding fails, move to the next one in the list
+            continue
+
+    # Return None if no encoding worked
+    return None
 
 
 def write_to_txt(file_path,text,mode=None,encoding=None):
@@ -1774,7 +1760,8 @@ def remove_empty_last_line(folder_path):
         f2.close()
     print(end_empty_files,str(len(end_empty_files))+" files found with last line empty!")
 
-def find_txt_files_with_keyword(root_folder, keyword, case_sensitive=None):
+
+def find_txt_files_with_keyword(root_folder, keyword, case_sensitive=False):
     """
     Find all .txt files whose names contain the specified keyword in a multi-level folder structure.
 
@@ -1784,21 +1771,22 @@ def find_txt_files_with_keyword(root_folder, keyword, case_sensitive=None):
 
     Returns:
         A list of file paths that match the search criteria.
-    """
-    import fnmatch,os
-    matches=[]
-    if case_sensitive is None or case_sensitive==False:
-        for root, dirnames, filenames in os.walk(root_folder):
-            for filename in fnmatch.filter(filenames, '*' + keyword + '*.txt'):
-                matches.append(os.path.join(root, filename))
-    elif case_sensitive==True:
-        import re
-        pattern=re.compile(r'.*' + re.escape(keyword) + r'.*\.txt')
-        for root, dirnames, filenames in os.walk(root_folder):
+    """    
+    import fnmatch
+    matches = []
+    if not case_sensitive:
+        keyword_lower = keyword.lower()
+        for root, _, filenames in os.walk(root_folder):
+            for filename in filenames:
+                if filename.lower().endswith(".txt") and keyword_lower in filename.lower():
+                    matches.append(os.path.join(root, filename))
+    else:
+        pattern = re.compile(r'.*' + re.escape(keyword) + r'.*\.txt')
+        for root, _, filenames in os.walk(root_folder):
             for filename in filenames:
                 if pattern.match(filename):
                     matches.append(os.path.join(root, filename))
-    return matches    
+    return matches
 
 import fnmatch
 def find_user_files_in_upper_folder(directory, user_file_name):
@@ -1897,7 +1885,7 @@ def cs1(text):
         sentences=sentences
     return sentences
 
-def word_tokenize(text, pos_tagged=False):
+def word_tokenize_zh(text, pos_tagged=False):
     '''
     Parameters
     ----------
@@ -1947,7 +1935,7 @@ def word_tokenize(text, pos_tagged=False):
             except Exception as rer:
                 print(rer)
 
-    return words  
+    return words 
 
 import re
 from abc import ABC, abstractmethod
@@ -2219,7 +2207,7 @@ class NLTKWordTokenizer(TokenizerI):
 
 # Standard word tokenizer.
 _treebank_word_tokenizer = NLTKWordTokenizer()
-def word_tokenize2(text, preserve_line=False):
+def word_tokenize(text, preserve_line=False):
     """
     Return a tokenized copy of *text*,
     using NLTK's recommended word tokenizer
@@ -2677,6 +2665,38 @@ def encode_chinese_keyword_for_url(chinese_keyword):
     # Return the encoded keyword
     return encoded_keyword
 
+from urllib.parse import urlparse, urljoin
+def make_full_url(url, target_url):
+    """
+    If the input URL lacks a domain, prepend the domain from the target URL.
+    Returns a full, openable URL.
+    """
+    parsed_url = urlparse(url)
+    parsed_target = urlparse(target_url)
+
+    # If the input URL has no netloc (domain), prepend the target's domain
+    if not parsed_url.netloc:
+        full_url = urljoin(f"{parsed_target.scheme}://{parsed_target.netloc}/", url)
+    else:
+        full_url = url  # Already a full URL
+
+    return full_url
+
+def extract_domain(url):
+    """
+    Extracts the domain (scheme + netloc) from a given URL.
+
+    Args:
+        url (str): The input URL.
+
+    Returns:
+        str: The domain (e.g., "https://www.reciyi.com").
+    """
+    parsed = urlparse(url)
+    domain = f"{parsed.scheme}://{parsed.netloc}"
+    return domain
+
+
 import random
 import requests
 from lxml import html, etree
@@ -2772,11 +2792,16 @@ class PGScraper(object):
                     if n<minspan:
                         try:
                             my_path=general_path.replace("id_holder", str(n))+"/text()"
-                            my_path_url=general_path.replace("id_holder", str(n))+"/@href"
                             target_eles=tree.xpath(my_path)
-                            target_url_eles=tree.xpath(my_path_url)
+                            my_path_url = general_path.replace("id_holder", str(n)) + "/@href"
+                            urls = tree.xpath(my_path_url)
+                            if not urls:
+                                ancestor_path = general_path.replace("id_holder", str(n)) + "/ancestor::a[1]/@href"
+                                my_path_url=ancestor_path
+                                urls = tree.xpath(ancestor_path)
                             if len(target_eles)>0:
-                                all_want_list.append((clean_list(target_eles),clean_list(target_url_eles)))                    
+                                target_url_eles = make_full_url(clean_list(urls), url)
+                                all_want_list.append((clean_list(target_eles),target_url_eles))                    
                                 valid_xpath.append((my_path,my_path_url))
                         except:
                             error_type, value, traceback=sys.exc_info()
@@ -2785,18 +2810,34 @@ class PGScraper(object):
         
                     elif minspan<=n<=maxspan:
                         my_path=general_path.replace("id_holder", str(n))+"/text()"
-                        my_path_url=general_path.replace("id_holder", str(n))+"/@href"
                         target_eles=tree.xpath(my_path)
-                        target_url_eles=tree.xpath(my_path_url)
-                        all_want_list.append((clean_list(target_eles),clean_list(target_url_eles)))          
+                        my_path_url = general_path.replace("id_holder", str(n)) + "/@href"
+                        urls = tree.xpath(my_path_url)
+                        if not urls:
+                            ancestor_path = general_path.replace("id_holder", str(n)) + "/ancestor::a[1]/@href"
+                            my_path_url=ancestor_path
+                            urls = tree.xpath(ancestor_path)
+                        target_url_eles = make_full_url(clean_list(urls), url)
+                        all_want_list.append((clean_list(target_eles),target_url_eles))          
                         valid_xpath.append((my_path,my_path_url))
                     elif maxspan<n:
                         my_path=general_path.replace("id_holder", str(n))+"/text()"
-                        my_path_url=general_path.replace("id_holder", str(n))+"/@href"
                         target_eles=tree.xpath(my_path)
-                        target_url_eles=tree.xpath(my_path_url)
+
+                        # Step 1: try to extract href from the element itself
+                        my_path_url = general_path.replace("id_holder", str(n)) + "/@href"
+                        urls = tree.xpath(my_path_url)
+                        
+                        # Step 2: if nothing found, check ancestor <a>
+                        if not urls:
+                            ancestor_path = general_path.replace("id_holder", str(n)) + "/ancestor::a[1]/@href"
+                            my_path_url=ancestor_path
+                            urls = tree.xpath(ancestor_path)
+                        
+                        # urls is now either the direct href or the ancestor's href
                         if len(target_eles)>0:
-                            all_want_list.append((clean_list(target_eles),clean_list(target_url_eles)))          
+                            target_url_eles = make_full_url(clean_list(urls), url)
+                            all_want_list.append((clean_list(target_eles),target_url_eles))          
                             valid_xpath.append((my_path,my_path_url))
                         else:
                             break
@@ -2824,10 +2865,11 @@ class PGScraper(object):
             # Parse HTML content
             tree=html.fromstring(html_content)
             if self.show_url==True:
-                for pat,url in self.pattern:
+                for pat, xurl in self.pattern:
                     target_eles=tree.xpath(pat)
-                    target_url_eles=tree.xpath(url)
-                    all_want_list.append((clean_list(target_eles), clean_list(target_url_eles)))
+                    target_url_eles=tree.xpath(xurl)
+                    full_url = make_full_url(clean_list(target_url_eles), url)
+                    all_want_list.append((clean_list(target_eles), full_url))
             else:     
                 for pat in self.pattern:
                     target_eles=tree.xpath(pat)
@@ -3151,7 +3193,7 @@ def mhtml2html(input_file_path, output_file_path=None):
 
 def get_data_html_offline(file_path):
     """
-    Reads a local HTML/XML file and extracts specific elements.
+    Reads a local HTML/XML/TMX file and extracts specific elements.
     Parameters:
     file_path (str): The path to the local HTML file. my_html="Top 5 Web Scraping Methods_ Including Using LLMs - Comet.mhtml"
     
@@ -3183,13 +3225,160 @@ def get_data_html_offline(file_path):
         html = etree.HTML(html_content)
         return html
     elif file_path.endswith(".html"): #.html
-        html=etree.parse(file_path,etree.HTMLParser())
+        html=etree.parse(file_path,etree.HTMLParser(encoding='utf-8'))
         return html
+    elif file_path.endswith(".tmx"):
+        tmx=etree.parse(file_path, etree.XMLParser())   
+        return tmx   
     elif file_path.endswith(".xml"):
         xml=etree.parse(file_path, etree.XMLParser())   
         return xml
     else:
-        print("Only supports mhtml, html, and xml file format!")
+        print("Only supports mhtml, html, tmx, and xml file format!")
+
+
+def get_recommend_xpath_from_file(file_path, target_text):
+    # 1. Load the tree
+    tree = get_data_html_offline(file_path)
+    if tree is None:
+        return ["Error: Load failed", ""]
+
+    # 2. Locate the target
+    search_query = f"//*[contains(string(), '{target_text}')]"
+    elements = tree.xpath(search_query)
+    if not elements:
+        return [f"Text '{target_text}' not found", ""]
+    target = elements[-1]
+    
+    # 3. Landmark Search (Target -> Parent -> Grandparent for H-tags)
+    landmark = None
+    curr = target
+    for _ in range(3):
+        if curr is None or curr.tag in ['html', 'body']: break
+        if re.match(r'^h[1-6]$', curr.tag):
+            landmark = curr
+            break
+        curr = curr.getparent()
+
+    # 4. Path Building
+    path_segments = []
+    if landmark is not None:
+        # Build from target up to landmark
+        temp = target
+        while temp is not landmark and temp is not None:
+            path_segments.insert(0, build_step(temp))
+            temp = temp.getparent()
+        path_segments.insert(0, f"//{build_step(landmark, is_base=True)}")
+    else:
+        # No H-tag, find nearest ancestor "leader" with attributes
+        temp = target
+        while temp is not None and temp.tag not in ['html', 'body']:
+            has_attr = temp.get('id') or temp.get('class')
+            step = build_step(temp, is_base=has_attr)
+            if has_attr:
+                path_segments.insert(0, f"//{step}")
+                break
+            path_segments.insert(0, step)
+            temp = temp.getparent()
+        if path_segments and not path_segments[0].startswith('//'):
+            path_segments[0] = "//" + path_segments[0]
+
+    specific_xpath = "/".join(path_segments)
+
+    # 5. Conditional Generalization
+    # Rule: Replace [n] with [*] UNLESS it is the only one AND it is at the end of the string.
+    # Count how many indices exist in the path
+    indices = re.findall(r'\[\d+\]', specific_xpath)
+    
+    if len(indices) == 1 and specific_xpath.endswith(indices[0]):
+        # Only one index, and it's at the end: don't generalize
+        general_xpath = specific_xpath
+    else:
+        # Otherwise, replace the first occurrence normally
+        general_xpath = re.sub(r'\[(\d+)\]', '[*]', specific_xpath, count=1)
+
+    return [specific_xpath, general_xpath]
+
+def build_step(node, is_base=False):
+    tag = node.tag
+    node_id = node.get('id')
+    node_class = node.get('class')
+    
+    parent = node.getparent()
+    idx = ""
+    if parent is not None:
+        siblings = parent.findall(tag)
+        if len(siblings) > 1:
+            idx = f"[{siblings.index(node) + 1}]"
+            
+    if node_id:
+        return f"{tag}[@id='{node_id}']"
+    if node_class:
+        first = node_class.split()[0]
+        return f"{tag}[contains(@class, '{first}')]{idx}"
+    return f"{tag}{idx}"
+
+def get_recommended_xpath(html_source, target_text):
+    tree = html.fromstring(html_source)
+    if tree is None:
+        return ["Error: Load failed", ""]
+
+    # 2. Locate the target
+    search_query = f"//*[contains(string(), '{target_text}')]"
+    elements = tree.xpath(search_query)
+    if not elements:
+        return [f"Text '{target_text}' not found", ""]
+    target = elements[-1]
+    
+    # 3. Landmark Search (Target -> Parent -> Grandparent for H-tags)
+    landmark = None
+    curr = target
+    for _ in range(3):
+        if curr is None or curr.tag in ['html', 'body']: break
+        if re.match(r'^h[1-6]$', curr.tag):
+            landmark = curr
+            break
+        curr = curr.getparent()
+
+    # 4. Path Building
+    path_segments = []
+    if landmark is not None:
+        # Build from target up to landmark
+        temp = target
+        while temp is not landmark and temp is not None:
+            path_segments.insert(0, build_step(temp))
+            temp = temp.getparent()
+        path_segments.insert(0, f"//{build_step(landmark, is_base=True)}")
+    else:
+        # No H-tag, find nearest ancestor "leader" with attributes
+        temp = target
+        while temp is not None and temp.tag not in ['html', 'body']:
+            has_attr = temp.get('id') or temp.get('class')
+            step = build_step(temp, is_base=has_attr)
+            if has_attr:
+                path_segments.insert(0, f"//{step}")
+                break
+            path_segments.insert(0, step)
+            temp = temp.getparent()
+        if path_segments and not path_segments[0].startswith('//'):
+            path_segments[0] = "//" + path_segments[0]
+
+    specific_xpath = "/".join(path_segments)
+
+    # 5. Conditional Generalization
+    # Rule: Replace [n] with [*] UNLESS it is the only one AND it is at the end of the string.
+    # Count how many indices exist in the path
+    indices = re.findall(r'\[\d+\]', specific_xpath)
+    
+    if len(indices) == 1 and specific_xpath.endswith(indices[0]):
+        # Only one index, and it's at the end: don't generalize
+        general_xpath = specific_xpath
+    else:
+        # Otherwise, replace the first occurrence normally
+        general_xpath = re.sub(r'\[(\d+)\]', '[*]', specific_xpath, count=1)
+
+    return [specific_xpath, general_xpath]
+
 
 def get_data_html_online(url, html=True, timeout=None, headers=None, cookies=None, params=None, proxies=None):
     '''
@@ -3223,7 +3412,8 @@ def get_data_html_online(url, html=True, timeout=None, headers=None, cookies=Non
             return None
     except Exception as err:
         print(err)
-
+        
+        
 def find_table_with_most_rows(tables): 
     max_rows=0
     max_table_index=-1
@@ -3364,7 +3554,7 @@ def get_all_env_variables():
     return dict(env_vars)
 
 import subprocess
-def set_permanent_environment_variable(variable_name, variable_value, system_wide=False):
+def set_permanent_env_var_win(variable_name, variable_value, system_wide=False):
     """
     Sets a permanent environment variable on Windows using the `setx` command.
 
@@ -3390,7 +3580,7 @@ def set_permanent_environment_variable(variable_name, variable_value, system_wid
     except Exception as e:
         print(f'An error occurred: {e}')
 
-def delete_permanent_environment_variable(variable_name, system_wide=False):
+def delete_permanent_env_var_win(variable_name, system_wide=False):
     """
     Deletes a permanent environment variable on Windows using the `reg` command.
 
@@ -3419,6 +3609,53 @@ def delete_permanent_environment_variable(variable_name, system_wide=False):
         print(f'Failed to delete environment variable: {e}')
     except Exception as e:
         print(f'An error occurred: {e}')
+
+
+def set_permanent_env_var_mac(var_name: str, var_value: str, shell_config: str = "~/.zshrc") -> None:
+    """
+    Sets a permanent environment variable by appending it to the specified shell configuration file.
+
+    Args:
+        var_name (str): Name of the environment variable.
+        var_value (str): Value of the environment variable.
+        shell_config (str): Path to the shell configuration file (e.g., "~/.zshrc", "~/.bashrc").
+                           Defaults to "~/.zshrc".
+    """
+    shell_config = os.path.expanduser(shell_config)
+
+    # Append the export line to the shell config file
+    with open(shell_config, "a") as f:
+        f.write(f'\nexport {var_name}="{var_value}"\n')
+
+    print(f'Added {var_name} to {shell_config}.')
+    print(f'Restart your shell or run: source {shell_config}')
+
+
+def delete_permanent_env_var_mac(var_name: str, shell_config: str = "~/.zshrc") -> None:
+    """
+    Deletes a permanent environment variable from the specified shell configuration file.
+
+    Args:
+        var_name (str): Name of the environment variable to delete.
+        shell_config (str): Path to the shell configuration file (e.g., "~/.zshrc", "~/.bashrc").
+                           Defaults to "~/.zshrc".
+    """
+    shell_config = os.path.expanduser(shell_config)
+
+    # Read the file and remove the line containing the export statement
+    with open(shell_config, "r") as f:
+        lines = f.readlines()
+
+    # Use regex to find and remove the line
+    pattern = re.compile(rf'^\s*export\s+{var_name}=.*$\n?', re.MULTILINE)
+    new_lines = [line for line in lines if not pattern.match(line)]
+
+    # Write the updated content back to the file
+    with open(shell_config, "w") as f:
+        f.writelines(new_lines)
+
+    print(f'Removed {var_name} from {shell_config}.')
+    print(f'Restart your shell or run: source {shell_config}')
 
 
 def calculate_mean_dependency_distance(spacy_doc):
@@ -3594,13 +3831,13 @@ def get_CET_dics(name=None):
     '''
     Parameters
     ----------
-    name : TYPE, string: like 'CET-4', 'CET-6', etc.
+    name : TYPE, string: like 'CET-4', 'CET-6', 'TEM-8', etc.
         DESCRIPTION. The default is None.
 
     Returns
     -------
     TYPE, list: like ['a', 'an', 'abandon', 'able', 'ability', 'aboard', 'abolish', 'abolition', 'about', 'above', 'abroad', 'absent', 'absence', 'absolute', 'absorb']
-        DESCRIPTION. The default will return a list of English CET (China's College English Test band 4 & 6) words.
+        DESCRIPTION. The default will return a list of English CET (China's College English Test band 4) words.
     '''
     
     dic_path=get_library_location("PgsFile")+"/PgsFile/models/dics"
@@ -3800,20 +4037,19 @@ def file_to_list_of_dicts(input_path, output_path):
 
 import liwc
 import json
-def perform_liwc_en(dic_path, file_path, output_excel_path):
+def perform_liwc_en(file_path, output_excel_path):
     '''
     Parameters
     ----------
-    dic_path : str
-        Path to the LIWC dictionary file.
     file_path : str
         Path to the raw text file.
     output_excel_path : str
         Path to the output Excel file.
     '''
+    dic_path = get_library_location("PgsFile")+"/PgsFile/models/dics/LIWC2015-English.dic" 
     parse, category_names = liwc.load_token_parser(dic_path)
     test = get_data_text(file_path)
-    test_tokens = [w.lower() for w in word_tokenize2(test)]
+    test_tokens = [w.lower() for w in word_tokenize(test)]
     my_word_list = dict(word_list(test_tokens))
     corpus_scale = sum(my_word_list.values())
 
@@ -3847,10 +4083,10 @@ def perform_liwc_en(dic_path, file_path, output_excel_path):
 
     import pandas as pd
     df = pd.DataFrame(data, columns=[u'类别', u'出现词种数', u'出现词次', u'总词次', u'覆盖率', u'例词'])
-    df.to_excel(output_excel_path, 'sheet1', index=False)
+    df.to_excel(output_excel_path, sheet_name='sheet1', index=False)
 
 
-def perform_liwc_zh(dic_path, file_path, output_excel_path):
+def perform_liwc_zh(file_path, output_excel_path):
     '''
     Parameters
     ----------
@@ -3861,12 +4097,13 @@ def perform_liwc_zh(dic_path, file_path, output_excel_path):
     output_excel_path : str
         Path to the output Excel file.
     '''        
+    dic_path = get_library_location("PgsFile")+"/PgsFile/models/dics/LIWC2015-Chinese.json" 
     
     f=open(dic_path,"r")
     dicx=json.load(f)    
     
     test = get_data_text(file_path)
-    test_tokens = word_tokenize(test)
+    test_tokens = word_tokenize_zh(test)
     my_word_list=dict(word_list(test_tokens))
     corpus_scale=sum(my_word_list.values())
     
@@ -3895,7 +4132,7 @@ def perform_liwc_zh(dic_path, file_path, output_excel_path):
     
     import pandas as pd
     df = pd.DataFrame(data,columns=[u'类别', u'出现词种数', u'占词表百分比', u'出现词次', u'总词次', u'覆盖率', u'例词'])
-    df.to_excel(output_excel_path,'sheet1',index=False)
+    df.to_excel(output_excel_path, sheet_name='sheet1',index=False)
     
     
 import math
@@ -3922,7 +4159,7 @@ def extract_keywords_en(target_text, top_n=10):
     my_dic_path = get_library_location("PgsFile")+"/PgsFile/models/dics/unigram_freq_only.json" # BNC_wordlist
     reference_freq = get_data_json(my_dic_path)
     # Tokenize target text and preserve original case
-    original_words = word_tokenize2(target_text)
+    original_words = word_tokenize(target_text)
     lower_words = [w.lower() for w in original_words if w.lower() not in BigPunctuation and w.lower() not in get_stopwords()]
     total_target = len(lower_words)
 
@@ -3959,7 +4196,7 @@ def extract_keywords_en_be21(target_text, top_n=10):
     my_dic_path = get_library_location("PgsFile")+"/PgsFile/models/dics/BE21.json" # BE21_wordlist
     reference_freq = get_data_json(my_dic_path)
     # Tokenize target text and preserve original case
-    original_words = word_tokenize2(target_text)
+    original_words = word_tokenize(target_text)
     lower_words = [w.lower() for w in original_words if w.lower() not in BigPunctuation and w.lower() not in get_stopwords()]
     total_target = len(lower_words)
 
@@ -4280,4 +4517,437 @@ def maketmx(
 
     with open(tmx_path, 'w', encoding='utf-8') as f:
         doc.writexml(f, indent='\t', newl='\n', addindent='\t')
+
+raw_translation_prompts = {
+    "general": {
+        "basic": "Act as a professional Chinese–English translator specializing in finance and economics. Translate the following text: {text}",
+        "formal_report": "Translate the following Chinese text into English, targeting an international audience with a formal tone suitable for a financial report: {text}",
+        "social_media": "Translate the following Chinese text into English, keeping a friendly and approachable tone suitable for social media content about finance: {text}",
+    },
+    "technical": {
+        "regulation": "Translate the following Chinese financial regulation into English, using terminology consistent with the People’s Bank of China (PBC) and international financial standards. Maintain a formal tone: {text}",
+        "contract": "Translate the following Chinese financial contract into English, ensuring consistency with financial and legal terminology, particularly in capital markets: {text}",
+        "glossary": "Translate the following Chinese text into English using the attached glossary and reference websites: {glossary}, {urls}. Text: {text}"
+    },
+    "review": {
+        "proofread": "Proofread the following Chinese-to-English machine translation. Correct grammar, syntax, and financial terminology errors, and improve readability while maintaining the original meaning: {text}",
+        "localize": "Review the following Chinese-to-English translation as a native English speaker. Adjust any phrases to ensure they sound natural and localized for an international finance audience: {text}",
+        "back_translate": "Back-translate the following English text into Chinese as literally as possible, without interpreting meaning: {text}"
+    },
+    "creative": {
+        "idiom": "How would an English speaker naturally express the Chinese economic idiom: {text}?",
+        "slogan": "Transcreate the following Chinese financial advertising slogan into English. Maintain its persuasive impact and cultural relevance while keeping it concise and memorable. Provide two versions and explain your choices: {text}"
+    }
+}
+
+RESULT_ONLY_NOTE = " Only return the translation result without any further explanations."
+
+def append_result_only(prompts_dict, note=RESULT_ONLY_NOTE):
+    """
+    Recursively append the note to all prompt strings in a nested dict.
+    """
+    updated = {}
+    for key, value in prompts_dict.items():
+        if isinstance(value, dict):
+            updated[key] = append_result_only(value, note)
+        elif isinstance(value, str):
+            updated[key] = value.strip() + note
+        else:
+            updated[key] = value
+    return updated
+
+# Apply it
+translation_prompts = append_result_only(raw_translation_prompts)
+
+
+def csv_to_json_append(csv_path: str, json_path: str) -> None:
+    """
+    Convert a CSV file into a list of dictionaries and append them into a JSON file.
+
+    Args:
+        csv_path (str): Path to the CSV file.
+        json_path (str): Path to the output JSON file.
+    """
+    
+    import pandas as pd
+    
+    # Load CSV into DataFrame
+    df = pd.read_csv(csv_path)
+
+    # Automatically get all columns, convert to list of dicts
+    data_list = df.to_dict(orient='records')
+
+    # Append each dict to JSON file
+    for record in data_list:
+        append_dict_to_json(json_path, record)
+
+    print(f"✅ Completed! Appended {len(data_list)} records to {json_path}")
+    
+def get_data_csv(csv_path: str) -> list[dict]:
+    """
+    Load a CSV file and return its rows as a list of dictionaries.
+    Column names are automatically detected.
+
+    Args:
+        csv_path (str): Path to the CSV file.
+
+    Returns:
+        list[dict]: A list of dictionaries, where each dict represents one row.
+    """
+    import pandas as pd
+    df = pd.read_csv(csv_path)
+    return df.to_dict(orient="records")    
+
+from ipaddress import ip_address, ip_network
+def check_ip_in_span(ip_to_check, cidr, additional_ips=None):
+    """
+    Check if the given IP address is within the specified CIDR subnet or in the list of additional allowed IPs.
+
+    Args:
+        ip_to_check (str): The IP address to check.
+        cidr (str): The CIDR notation of the subnet (e.g., "10.2.57.0/25").
+        additional_ips (list): List of additional allowed IP addresses (e.g., ["10.1.143.40"]).
+
+    Returns:
+        None: Prints a message indicating if the IP is allowed or not.
+    """
+    try:
+        ip = ip_address(ip_to_check)
+        network = ip_network(cidr, strict=False)
+
+        # Check if the IP is in the subnet or in the additional IPs list
+        if ip in network or (additional_ips and ip_address(ip_to_check) in [ip_address(ip) for ip in additional_ips]):
+            return 1
+
+        else:
+            return 0
+    except ValueError:
+        return "Invalid IP address or CIDR format."
+
+
+import socket
+def get_local_ip():
+    """
+    Get the local IP address of the machine.
+
+    Returns:
+        str: The local IP address, or "Unable to determine local IP" if not found.
+    """
+    try:
+        # Create a socket connection to a public DNS server to determine the local IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))  # Google's public DNS server
+        local_ip = s.getsockname()[0]
+        s.close()
+        return local_ip
+    except Exception as e:
+        return f"Unable to determine local IP: {e}"
+    
+import math
+def calculate_deviation(data, return_std=True, return_mad=True):
+    """
+    Calculate the standard deviation and/or mean absolute deviation of a dataset.
+
+    Parameters:
+    - data (list): List of numerical values.
+    - return_std (bool): If True, returns the standard deviation. Default is True.
+    - return_mad (bool): If True, returns the mean absolute deviation. Default is True.
+
+    Returns:
+    - dict: A dictionary containing the requested deviation(s) and the mean.
+            Keys: "standard_deviation", "mean_absolute_deviation", "mean".
+    """
+    # Calculate the mean (average) of the data
+    mean = sum(data) / len(data)
+
+    result = {"mean": mean}
+
+    if return_std:
+        # Calculate the standard deviation
+        squared_diffs = [(x - mean) ** 2 for x in data]
+        variance = sum(squared_diffs) / len(data)
+        std_deviation = math.sqrt(variance)
+        result["standard_deviation"] = std_deviation
+
+    if return_mad:
+        # Calculate the mean absolute deviation
+        absolute_diffs = [abs(x - mean) for x in data]
+        mean_abs_deviation = sum(absolute_diffs) / len(data)
+        result["mean_absolute_deviation"] = mean_abs_deviation
+
+    return result
+
+
+def is_broken_text(file_path, deviation_value=False):
+    """
+    Detects if a file contains potential broken or noisy text by analyzing the deviation in line lengths.
+    A low standard deviation in line lengths often indicates broken or poorly formatted text.
+
+    Parameters:
+    - file_path (str): Path to the file to be analyzed.
+    - deviation_value (bool): If True, returns the standard deviation value along with the result.
+                             If False, returns only a boolean. Default is False.
+
+    Returns:
+    - bool or tuple: If `deviation_value` is False, returns True if the text is likely broken, False otherwise.
+                    If `deviation_value` is True, returns a tuple: (is_broken, standard_deviation).
+    """
+    lines = get_data_lines(file_path)
+    line_lengths = [len(line) for line in lines]
+    deviation_results = calculate_deviation(line_lengths)
+    standard_deviation = deviation_results['standard_deviation']
+
+    is_broken = standard_deviation < 15
+
+    if deviation_value:
+        return (is_broken, standard_deviation)
+    else:
+        return is_broken
+
+import os
+def get_folder_path(file_path):
+    """
+    Extracts the folder path from a given file path.
+
+    Args:
+        file_path (str): The full path to a file.
+
+    Returns:
+        str: The folder path containing the file.
+    """
+    return os.path.dirname(file_path)
+
+import pandas as pd
+def delete_columns_by_id_and_save(input_file, column_ids, output_file=None):
+    """
+    Delete columns from a DataFrame by their IDs and save the result.
+
+    Parameters:
+    - input_file (str): Path to the input file (e.g., CSV, Excel).
+    - column_ids (list): List of column indices to delete.
+    - output_file (str, optional): Path to save the cleaned file.
+                                  If None, overwrites the input file.
+
+    Returns:
+    - pd.DataFrame: DataFrame with specified columns removed.
+    """
+    # Read the input file
+    if input_file.endswith('.csv'):
+        df = pd.read_csv(input_file)
+    elif input_file.endswith(('.xlsx', '.xls')):
+        df = pd.read_excel(input_file)
+    else:
+        raise ValueError("Unsupported file format. Use CSV or Excel.")
+
+    # Drop the specified columns
+    cols_to_drop = df.columns[column_ids]
+    df_cleaned = df.drop(columns=cols_to_drop)
+
+    # Save the cleaned DataFrame
+    if output_file is None:
+        output_file = input_file  # Overwrite the input file
+
+    if output_file.endswith('.csv'):
+        df_cleaned.to_csv(output_file, index=False)
+    elif output_file.endswith(('.xlsx', '.xls')):
+        df_cleaned.to_excel(output_file, index=False)
+
+    return df_cleaned
+
+# Example usage:
+# delete_columns_by_id_and_save("input.csv", column_ids=[0, 2])
+# delete_columns_by_id_and_save("input.xlsx", column_ids=[0, 2], output_file="output.xlsx")
+
+
+import json
+def load_cedict_idioms(json_path):
+    """
+    Load 4-character idioms from CC-CEDICT JSON
+    """
+    with open(json_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    idioms = {}
+
+    for entry in data:
+        word = entry["simplified"]
+        if len(word) == 4:
+            idioms[word] = {
+                "source": "cedict",
+                "pinyin": entry.get("pinyin", ""),
+                "english": entry.get("english", "")
+            }
+
+    return idioms
+
+
+def load_txt_idioms(txt_path):
+    """
+    Load idioms from frequency list
+    """
+    idioms = {}
+    with open(txt_path, encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+
+            word = line.split()[0]
+
+            if len(word) == 4:
+                idioms[word] = {
+                    "source": "txt"
+                }
+
+    return idioms
+
+def merge_idiom_sources(cedict_dict, txt_dict):
+    merged = {}
+    all_words = set(cedict_dict) | set(txt_dict)
+    for word in all_words:
+        merged[word] = {
+            "word": word,
+            "sources": [],
+            "pinyin": None,
+            "english": None
+        }
+
+        if word in cedict_dict:
+            merged[word]["sources"].append("cedict")
+            merged[word]["pinyin"] = cedict_dict[word].get("pinyin")
+            merged[word]["english"] = cedict_dict[word].get("english")
+
+        if word in txt_dict:
+            merged[word]["sources"].append("txt")
+            
+    return merged
+
+def extract_idioms_ensemble(text):
+    """
+    Dictionary-union idiom extractor
+    """
+    results = []
+    seen = set()
+    
+    inter=get_library_location("PgsFile")+"/PgsFile/Corpora/Idioms"
+    idiom_dict = build_idiom_extractor(
+        get_full_path(inter, "cedict_parsed.json"),
+        get_full_path(inter, "THUOCL_chengyu.txt")
+    )
+
+    for i in range(len(text) - 3):
+        candidate = text[i:i+4]
+
+        if candidate in idiom_dict:
+            key = (candidate, i)
+            if key in seen:
+                continue
+
+            info = idiom_dict[candidate]
+
+            results.append({
+                "idiom": candidate,
+                "start": i,
+                "end": i + 4,
+                "sources": info["sources"],
+                "pinyin": info["pinyin"],
+                "english": info["english"]
+            })
+
+            seen.add(key)
+
+    return results
+
+def build_idiom_extractor(
+    cedict_json_path,
+    chengyu_txt_path
+):
+    cedict_idioms = load_cedict_idioms(cedict_json_path)
+    txt_idioms = load_txt_idioms(chengyu_txt_path)
+
+    idiom_dict = merge_idiom_sources(
+        cedict_idioms,
+        txt_idioms
+    )
+    return idiom_dict
+
+
+def evaluate_cws(gold_path, pred_path):
+    """
+    Evaluates Chinese Word Segmentation results.
+    
+    Args:
+        gold_path (str): Path to the ground truth tokenized file.
+        pred_path (str): Path to the PgsTokenizer model output file.
+    """
+    if not os.path.exists(pred_path):
+        return "Error: Prediction file not found."
+
+    total_gold_words = 0
+    total_pred_words = 0
+    correct_words = 0
+
+    with open(gold_path, 'r', encoding='utf-8') as g_file, \
+         open(pred_path, 'r', encoding='utf-8') as p_file:
+        
+        for g_line, p_line in zip(g_file, p_file):
+            g_tokens = g_line.strip().split()
+            p_tokens = p_line.strip().split()
+
+            # Helper to convert list of tokens to boundary sets
+            def get_boundaries(tokens):
+                boundaries = set()
+                current_idx = 0
+                for token in tokens:
+                    start = current_idx
+                    end = current_idx + len(token)
+                    boundaries.add((start, end))
+                    current_idx = end
+                return boundaries
+
+            gold_bounds = get_boundaries(g_tokens)
+            pred_bounds = get_boundaries(p_tokens)
+
+            total_gold_words += len(gold_bounds)
+            total_pred_words += len(pred_bounds)
+            correct_words += len(gold_bounds & pred_bounds)
+
+    # Calculate Metrics
+    precision = correct_words / total_pred_words if total_pred_words > 0 else 0
+    recall = correct_words / total_gold_words if total_gold_words > 0 else 0
+    
+    if (precision + recall) == 0:
+        f1 = 0
+    else:
+        f1 = (2 * precision * recall) / (precision + recall)
+
+    print(f"--- Evaluation Results ---")
+    print(f"Precision: {precision:.4f}")
+    print(f"Recall:    {recall:.4f}")
+    print(f"F1-Score:  {f1:.4f}")
+    
+    return {"precision": precision, "recall": recall, "f1": f1}
+
+
+def write_html_element_to_html(my_html, output_path):
+    """
+    Saves an lxml.html element to a .html file.
+    
+    Args:
+        my_html: The lxml.html element object (e.g., <Element html ...>)
+        output_path: The path (string, like "output.html") where the file should be saved
+    """
+    try:
+        # 1. Convert the element to a string
+        # pretty_print=True makes the file readable
+        # encoding='unicode' ensures we get a string, not bytes
+        html_content = html.tostring(my_html, pretty_print=True, method="html", encoding='unicode')
+        
+        # 2. Save to file
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+            
+        print(f"✅ Successfully saved to: {output_path}")
+        
+    except Exception as e:
+        print(f"❌ Error saving file: {e}")
 
