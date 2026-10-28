@@ -3412,55 +3412,51 @@ def get_data_html_online(url, html=True, timeout=None, headers=None, cookies=Non
             return None
     except Exception as err:
         print(err)
-        
-        
-def find_table_with_most_rows(tables): 
-    max_rows=0
-    max_table_index=-1
-    for i, table in enumerate(tables):
-        if isinstance(table, pd.DataFrame) and len(str(table.shape[0])) > max_rows:
-            max_rows=len(str(table.shape[0]))
-            max_table_index=i
-    return max_table_index, max_rows if max_table_index!= -1 else None
 
-def get_data_table_url(url, output_file, most_rows=True):
+
+def get_data_table_url(url, output_file):
     try:
-        # Wrap the HTML string in a StringIO object
-        tables=pd.read_html(url)
-        if most_rows==False:
-            # 1. default: the first table
-            df=tables[0]  
-        else:
-            # 2. get the table with most rows
-            target_table=find_table_with_most_rows(tables)[0] #  (1, 32)
-            df=tables[target_table]        
+        tables = pd.read_html(url)
+        if not tables:
+            print("No tables found on the page.")
+            return None
+            
+        # Stack all tables vertically into a single DataFrame.
+        # pandas automatically aligns columns by header name and keeps a single header.
+        combined_df = pd.concat(tables, ignore_index=True)
         
-        df.to_excel(output_file, index=False)
-        print(f"Data has been saved to {output_file}")
+        # Export the unified table to Excel
+        combined_df.to_excel(output_file, index=False)
+        print(f"Successfully combined {len(tables)} tables into {output_file}")
+        return combined_df
+        
     except Exception as err:
         print(f"Errors found! {err}")
         return None
+    
 
-def get_data_table_html_string(html_string, output_file, most_rows=True):
+def get_data_table_html_string(html_string, output_file):
     try:
-        # Wrap the HTML string in a StringIO object
         from io import StringIO
         html_io = StringIO(html_string)
-        tables=pd.read_html(html_io)
-        if most_rows==False:
-            # 1. default: the first table
-            df=tables[0]  
-        else:
-            # 2. get the table with most rows
-            target_table=find_table_with_most_rows(tables)[1] #  (1, 32)
-            df=tables[target_table]        
+        tables = pd.read_html(html_io)
         
-        df.to_excel(output_file, index=False)
+        if not tables:
+            print("No tables found in the provided HTML string.")
+            return None
+            
+        # Combine all tables into a single DataFrame sharing one header
+        combined_df = pd.concat(tables, ignore_index=True)
+        
+        # Export the combined table to Excel
+        combined_df.to_excel(output_file, index=False)
         print(f"Data has been saved to {output_file}")
+        return combined_df
+        
     except Exception as err:
         print(f"Errors found! {err}")
         return None
-
+    
 import importlib.metadata
 def get_library_location(library_name):
     distribution = importlib.metadata.distribution(library_name)
@@ -4951,3 +4947,295 @@ def write_html_element_to_html(my_html, output_path):
     except Exception as e:
         print(f"❌ Error saving file: {e}")
 
+
+import csv
+import logging
+import sqlite3
+from typing import Dict, Any, List, Union, Optional, Set
+from pathlib import Path
+import urllib.request
+import urllib.parse
+import openai
+
+
+# Configure standard logging for progress monitoring
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%H:%M:%S"
+)
+
+
+class PageLoader:
+    """Utility class to fetch HTML content from URLs or local file paths."""
+
+    @staticmethod
+    def load_source(source: str, timeout: int = 10) -> str:
+        """Loads HTML string from either a local file path or a remote URL."""
+        if source.startswith("http://") or source.startswith("https://"):
+            req = urllib.request.Request(
+                source,
+                headers=headers
+            )
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                return response.read().decode("utf-8", errors="ignore")
+        else:
+            path = Path(source)
+            if not path.is_file():
+                raise FileNotFoundError(f"Local file not found: {source}")
+            return path.read_text(encoding="utf-8", errors="ignore")
+
+
+class LLMSchemaGenerator:
+    """
+    Generates XPath schemas from natural language prompts using an OpenAI-compatible API.
+    """
+
+    def __init__(
+        self,
+        api_key: str,
+        base_url: Optional[str] = None,
+        model: str = "gpt-4o"
+    ):
+        """
+        Initialize with OpenAI credentials or any OpenAI-compatible endpoint.
+        """
+        self.client = openai.OpenAI(api_key=api_key, base_url=base_url)
+        self.model = model
+
+    def generate_schema(
+        self,
+        html_content: str,
+        target_fields: Dict[str, str],
+        max_html_chars: int = 50000
+    ) -> Dict[str, str]:
+        """
+        Sends the HTML sample and target field descriptions to the LLM to return an XPath schema.
+
+        :param html_content: HTML source code string.
+        :param target_fields: Dictionary mapping field names to natural language descriptions.
+                              e.g., {"title": "Main product title", "price": "The discounted price"}
+        :param max_html_chars: Truncate HTML if necessary to fit context window limits.
+        :return: Dict mapping field names to XPath strings.
+        """
+        truncated_html = html_content[:max_html_chars]
+
+        system_prompt = (
+            "You are an expert web scraping engineer. Your task is to analyze raw HTML source code "
+            "and generate robust, precise XPath 1.0 expressions for requested data fields.\n"
+            "Respond ONLY with a valid JSON object mapping each requested field name to its corresponding XPath string.\n"
+            "Do not include Markdown formatting, explanations, or backticks in your response."
+        )
+
+        user_prompt = f"""
+HTML Content Sample:
+{truncated_html}
+
+Target Fields to Extract (Field Name: Natural Language Description):
+{json.dumps(target_fields, indent=2)}
+
+Generate an XPath expression for each field. Ensure the XPaths target the text node or target attribute directly where appropriate.
+Return format:
+{{
+  "field_name": "//xpath/expression"
+}}
+"""
+
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.0
+        )
+
+        raw_output = response.choices[0].message.content.strip()
+
+        # Clean potential markdown block formatting if returned by the LLM
+        if raw_output.startswith("```json"):
+            raw_output = raw_output[7:]
+        if raw_output.startswith("```"):
+            raw_output = raw_output[3:]
+        if raw_output.endswith("```"):
+            raw_output = raw_output[:-3]
+
+        return json.loads(raw_output.strip())
+
+
+class XPathExtractor:
+    """
+    Executes deterministic, non-LLM batch processing on HTML content using a pre-generated XPath schema.
+    Supports real-time disk streaming, progress tracking, and job resumption.
+    """
+
+    def __init__(self, schema: Dict[str, str]):
+        """
+        :param schema: Dictionary mapping field names to XPath expressions.
+        """
+        self.schema = schema
+
+    def extract_single(self, html_content: str) -> Dict[str, Union[str, List[str], None]]:
+        """Parses a single HTML string and extracts all fields specified in the schema."""
+        tree = html.fromstring(html_content)
+        results = {}
+
+        for field, xpath_expr in self.schema.items():
+            elements = tree.xpath(xpath_expr)
+
+            if not elements:
+                results[field] = None
+            elif len(elements) == 1:
+                elem = elements[0]
+                results[field] = elem.text_content().strip() if hasattr(elem, "text_content") else str(elem).strip()
+            else:
+                extracted_list = []
+                for elem in elements:
+                    text = elem.text_content().strip() if hasattr(elem, "text_content") else str(elem).strip()
+                    if text:
+                        extracted_list.append(text)
+                results[field] = extracted_list
+
+        return results
+
+    def _get_processed_sources(self, output_path: Path, storage_format: str) -> Set[str]:
+        """
+        Reads existing file/database to recover previously processed sources for job resumption.
+        """
+        processed = set()
+        if not output_path.exists():
+            return processed
+
+        try:
+            if storage_format == "jsonl":
+                with output_path.open("r", encoding="utf-8") as f:
+                    for line in f:
+                        if line.strip():
+                            record = json.loads(line)
+                            if "_source" in record:
+                                processed.add(record["_source"])
+
+            elif storage_format == "csv":
+                with output_path.open("r", encoding="utf-8", newline="") as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        if "_source" in row:
+                            processed.add(row["_source"])
+
+            elif storage_format == "sqlite":
+                conn = sqlite3.connect(output_path)
+                cursor = conn.cursor()
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='extractions'")
+                if cursor.fetchone():
+                    cursor.execute("SELECT source FROM extractions")
+                    processed = {row[0] for row in cursor.fetchall()}
+                conn.close()
+        except Exception as e:
+            logging.warning(f"Could not load previous checkpoint state completely: {e}")
+
+        return processed
+
+    def batch_extract(
+        self,
+        sources: List[str],
+        output_file: str,
+        storage_format: str = "jsonl",
+        resume: bool = True
+    ) -> None:
+        """
+        Processes sources in batch, streams data directly to disk after each page,
+        prints real-time progress, and skips already scraped items if resumed.
+
+        :param sources: List of URLs or local HTML file paths.
+        :param output_file: File path where data will be saved.
+        :param storage_format: Format to save data ('jsonl', 'csv', 'sqlite').
+        :param resume: If True, checks existing output file and skips already processed sources.
+        """
+        out_path = Path(output_file)
+        storage_format = storage_format.lower()
+
+        if storage_format not in ("jsonl", "csv", "sqlite"):
+            raise ValueError("storage_format must be one of: 'jsonl', 'csv', 'sqlite'")
+
+        # 1. Checkpoint Recovery: Identify completed sources
+        processed_sources = set()
+        if resume:
+            processed_sources = self._get_processed_sources(out_path, storage_format)
+            if processed_sources:
+                logging.info(f"Resuming job: {len(processed_sources)} sources already processed and will be skipped.")
+
+        total_count = len(sources)
+        fieldnames = ["_source", "_status"] + list(self.schema.keys())
+
+        # 2. Process & Stream Data Page by Page
+        for index, source in enumerate(sources, start=1):
+            percent = (index / total_count) * 100
+
+            # Skip duplicate processing
+            if source in processed_sources:
+                logging.info(f"[{index}/{total_count}] ({percent:.1f}%) SKIPPED (Already done): {source}")
+                continue
+
+            record: Dict[str, Any] = {"_source": source, "_status": "success"}
+
+            # Extract data
+            try:
+                content = PageLoader.load_source(source)
+                data = self.extract_single(content)
+                record.update(data)
+                logging.info(f"[{index}/{total_count}] ({percent:.1f}%) SUCCESS: {source}")
+            except Exception as e:
+                record["_status"] = f"error: {str(e)}"
+                for field in self.schema.keys():
+                    record[field] = None
+                logging.error(f"[{index}/{total_count}] ({percent:.1f}%) FAILED: {source} | Error: {e}")
+
+            # 3. Stream record immediately to local disk
+            self._write_record(out_path, record, storage_format, fieldnames)
+            processed_sources.add(source)
+
+        logging.info(f"Batch execution complete. Results written to: {out_path.resolve()}")
+
+    def _write_record(self, path: Path, record: Dict[str, Any], fmt: str, fieldnames: List[str]) -> None:
+        """Helper method to append a single record to disk using built-in libraries."""
+        if fmt == "jsonl":
+            with path.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+        elif fmt == "csv":
+            file_exists = path.exists() and path.stat().st_size > 0
+            with path.open("a", encoding="utf-8", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                if not file_exists:
+                    writer.writeheader()
+                # Convert list values to JSON string for clean CSV output
+                cleaned_record = {
+                    k: (json.dumps(v, ensure_ascii=False) if isinstance(v, list) else v)
+                    for k, v in record.items()
+                }
+                writer.writerow(cleaned_record)
+
+        elif fmt == "sqlite":
+            conn = sqlite3.connect(path)
+            cursor = conn.cursor()
+            
+            # Create table if it doesn't exist
+            columns_sql = ", ".join([f'"{col}" TEXT' for col in fieldnames])
+            cursor.execute(f"CREATE TABLE IF NOT EXISTS extractions (id INTEGER PRIMARY KEY AUTOINCREMENT, {columns_sql})")
+
+            # Insert record
+            placeholders = ", ".join(["?"] * len(fieldnames))
+            col_names = ", ".join([f'"{col}"' for col in fieldnames])
+            
+            values = []
+            for col in fieldnames:
+                val = record.get(col)
+                if isinstance(val, (list, dict)):
+                    val = json.dumps(val, ensure_ascii=False)  # 关键改动
+                if isinstance(val, str):
+                    assert val == val.encode("utf-8").decode("utf-8"), f"Bad encoding in {col}"
+                values.append(val)
+    
+            cursor.execute(f"INSERT INTO extractions ({col_names}) VALUES ({placeholders})", values)
+            conn.commit()
+            conn.close()    

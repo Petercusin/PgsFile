@@ -6,7 +6,7 @@ Created on Tue Mar 10 12:07:25 2026
 """
 
 # 1. Web scraping
-from .PgsFile import PGScraper
+from .PgsFile import PGScraper, LLMSchemaGenerator, PageLoader, XPathExtractor
 from .PgsFile import audiovisual_downloader
 from .PgsFile import headers, encode_chinese_keyword_for_url
 from .PgsFile import get_local_ip, check_ip_in_span
